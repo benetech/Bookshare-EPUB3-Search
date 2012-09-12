@@ -426,7 +426,7 @@ dojo.declare("BookShare", wm.Application, {
 	"phoneMain": "", 
 	"projectSubVersion": "Alpha", 
 	"projectVersion": 1, 
-	"saveCounter": 64, 
+	"saveCounter": 65, 
 	"showIOSPhoneGapBackButton": false, 
 	"studioVersion": "6.5.0.M4", 
 	"tabletMain": "", 
@@ -464,6 +464,40 @@ dojo.declare("BookShare", wm.Application, {
 			publisher: ["wm.TypeDefinitionField", {"fieldName":"publisher"}, {}],
 			title: ["wm.TypeDefinitionField", {"fieldName":"title"}, {}]
 		}], 
+		"CategoryListResponse.bookshare": ["wm.TypeDefinition", {}, {}, {
+			category: ["wm.TypeDefinitionField", {"fieldName":"category","fieldType":"CategoryListResponse.bookshare.category"}, {}],
+			version: ["wm.TypeDefinitionField", {"fieldName":"version"}, {}],
+			messages: ["wm.TypeDefinitionField", {"fieldName":"messages","fieldType":"StringData","isList":true}, {}]
+		}], 
+		"CategoryListResponse.bookshare.category": ["wm.TypeDefinition", {}, {}, {
+			list: ["wm.TypeDefinitionField", {"fieldName":"list","fieldType":"CategoryListResponse.bookshare.category.list"}, {}],
+			result: ["wm.TypeDefinitionField", {"fieldName":"result","fieldType":"CategoryListResponse.bookshare.category.result","isList":true}, {}]
+		}], 
+		"CategoryListResponse.bookshare.category.list": ["wm.TypeDefinition", {}, {}, {
+			limit: ["wm.TypeDefinitionField", {"fieldName":"limit","fieldType":"Number"}, {}],
+			numPages: ["wm.TypeDefinitionField", {"fieldName":"numPages","fieldType":"Number"}, {}],
+			page: ["wm.TypeDefinitionField", {"fieldName":"page","fieldType":"Number"}, {}]
+		}], 
+		"CategoryListResponse.bookshare.category.result": ["wm.TypeDefinition", {}, {}, {
+			name: ["wm.TypeDefinitionField", {"fieldName":"name"}, {}]
+		}], 
+		"GradeListResponse.bookshare": ["wm.TypeDefinition", {}, {}, {
+			grade: ["wm.TypeDefinitionField", {"fieldName":"grade","fieldType":"GradeListResponse.bookshare.grade"}, {}],
+			version: ["wm.TypeDefinitionField", {"fieldName":"version"}, {}],
+			messages: ["wm.TypeDefinitionField", {"fieldName":"messages","fieldType":"StringData","isList":true}, {}]
+		}], 
+		"GradeListResponse.bookshare.grade": ["wm.TypeDefinition", {}, {}, {
+			list: ["wm.TypeDefinitionField", {"fieldName":"list","fieldType":"GradeListResponse.bookshare.grade.list"}, {}],
+			result: ["wm.TypeDefinitionField", {"fieldName":"result","fieldType":"GradeListResponse.bookshare.grade.result","isList":true}, {}]
+		}], 
+		"GradeListResponse.bookshare.grade.list": ["wm.TypeDefinition", {}, {}, {
+			limit: ["wm.TypeDefinitionField", {"fieldName":"limit","fieldType":"Number"}, {}],
+			numPages: ["wm.TypeDefinitionField", {"fieldName":"numPages","fieldType":"Number"}, {}],
+			page: ["wm.TypeDefinitionField", {"fieldName":"page","fieldType":"Number"}, {}]
+		}], 
+		"GradeListResponse.bookshare.grade.result": ["wm.TypeDefinition", {}, {}, {
+			name: ["wm.TypeDefinitionField", {"fieldName":"name"}, {}]
+		}], 
 		"ISBNLookupResponse.bookshare": ["wm.TypeDefinition", {}, {}, {
 			version: ["wm.TypeDefinitionField", {"fieldName":"version"}, {}],
 			messages: ["wm.TypeDefinitionField", {"fieldName":"messages","fieldType":"StringData","isList":true}, {}],
@@ -495,14 +529,27 @@ dojo.declare("BookShare", wm.Application, {
 		BrowseLatestResponse: ["wm.TypeDefinition", {}, {}, {
 			bookshare: ["wm.TypeDefinitionField", {"fieldName":"bookshare","fieldType":"BrowseLatestResponse.bookshare"}, {}]
 		}], 
+		CategoryListResponse: ["wm.TypeDefinition", {}, {}, {
+			bookshare: ["wm.TypeDefinitionField", {"fieldName":"bookshare","fieldType":"CategoryListResponse.bookshare"}, {}]
+		}], 
+		GradeListResponse: ["wm.TypeDefinition", {}, {}, {
+			bookshare: ["wm.TypeDefinitionField", {"fieldName":"bookshare","fieldType":"GradeListResponse.bookshare"}, {}]
+		}], 
 		ISBNLookupResponse: ["wm.TypeDefinition", {}, {}, {
 			bookshare: ["wm.TypeDefinitionField", {"fieldName":"bookshare","fieldType":"ISBNLookupResponse.bookshare"}, {}]
 		}], 
-		AuthorSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"author":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"ttp://api.bookshare.org/book/search"}, {}], 
+		AuthorSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"author":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book/search"}, {}], 
 		BookIdLookup: ["wm.XhrDefinition", {"headers":{},"parameters":{"id":{"transmitType":"path","type":"String","bindable":true},"for":{"transmitType":"path","type":"String","bindable":true},"format":{"transmitType":"path","type":"String","bindable":true},"api_key":{"transmitType":"queryString","type":"String","bindable":true},"X-password":{"transmitType":"header","type":"String","bindable":true}},"returnType":"ISBNLookupResponse","url":"http://api.bookshare.org/book"}, {}], 
 		BrowseLatest: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book"}, {}], 
+		BrowserPopular: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book/popular"}, {}], 
+		CategoryList: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"CategoryListResponse","url":"http://api.bookshare.org/reference/category/list"}, {}], 
+		CategorySearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"category":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/search"}, {}], 
+		DatePublishedSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"since":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book/search"}, {}], 
 		FullTextSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"searchFTS":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book"}, {}], 
+		GradeList: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"GradeListResponse","url":"http://api.bookshare.org/reference/grade/list"}, {}], 
+		GradeSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"grade":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book/search"}, {}], 
 		ISBNLookup: ["wm.XhrDefinition", {"headers":{},"parameters":{"isbn":{"transmitType":"path","type":"String"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"ISBNLookupResponse","url":"http://api.bookshare.org/book"}, {}], 
+		TitleAuthorSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"search":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book"}, {}], 
 		TitleSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"title":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"http://api.bookshare.org/book/search"}, {}]
 	},
 	_end: 0
