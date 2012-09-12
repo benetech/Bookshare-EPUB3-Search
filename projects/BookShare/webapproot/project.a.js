@@ -426,7 +426,7 @@ dojo.declare("BookShare", wm.Application, {
 	"phoneMain": "", 
 	"projectSubVersion": "Alpha", 
 	"projectVersion": 1, 
-	"saveCounter": 22, 
+	"saveCounter": 57, 
 	"showIOSPhoneGapBackButton": false, 
 	"studioVersion": "6.5.0.M4", 
 	"tabletMain": "", 
@@ -476,4 +476,42 @@ BookShare.extend({
 
 	_end: 0
 });
-BookShare.prototype._css = '';
+BookShare.prototype._css = '.HeaderPanel, .HeaderPanel .wmlabel {\
+font-weight: bold ;\
+font-size: 1.4Em ;\
+color: white ;\
+}\
+html.WMApp body .MainContent {\
+background-color: #ffffff;\
+-webkit-border-radius: 16px;\
+border-radius: 16px;\
+}\
+.MobileListStyle .wmlist-item {\
+background: -webkit-gradient(linear, center top, center bottom, from(#F37D23), color-stop(94%,#C2641A), to(#C2641A));\
+background: -moz-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);\
+background: -o-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);\
+background: -ms-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);\
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#F37D23", endColorstr="#C2641A",GradientType=0);\
+border-color: #febd57 !important;\
+border-width: 1px 2px 2px 1px !important;\
+}\
+.MobileListStyle .wmlist-item.wmlist-item-selected {\
+background: -webkit-gradient(linear, center top, center bottom, from(#F37D23), color-stop(10%,#C2641A), to(#C2641A));\
+background: -moz-linear-gradient(top, #F37D23 0%,#C2641A 10%,#C2641A 100%);\
+background: -o-linear-gradient(top, #F37D23 0%,#C2641A 10%,#C2641A 100%);\
+background: -ms-linear-gradient(top, #F37D23 0%,#C2641A 10%,#C2641A 100%);\
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#F37D23", endColorstr="#C2641A",GradientType=0);\
+color: white !important;\
+font-weight: bold;\
+}\
+.mblArrow {\
+border-color: #6C88C7 !important;\
+}\
+.Page {\
+background: -webkit-gradient(linear, center top, center bottom, from(#6C88C7), color-stop(20%,#B0C6F5), to(#B0C6F5));\
+background: -moz-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);\
+background: -o-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);\
+background: -ms-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);\
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#6C88C7", endColorstr="#B0C6F5",GradientType=0);\
+}\
+';
