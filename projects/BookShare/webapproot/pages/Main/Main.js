@@ -4,6 +4,9 @@ dojo.declare("Main", wm.Page, {
     },
     "preferredDevice": "phone",
 
+    loginSuccess: function(){
+        this.homeLayer.activate();
+    },
     mainMenuListSelect: function(inSender, inItem) {
         switch(inSender.selectedItem.getValue("name")) {
             case "Search":

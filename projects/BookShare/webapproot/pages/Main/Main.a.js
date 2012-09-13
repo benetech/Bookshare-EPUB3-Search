@@ -2,6 +2,9 @@ dojo.declare("Main", wm.Page, {
 start: function() {
 },
 "preferredDevice": "phone",
+loginSuccess: function(){
+this.homeLayer.activate();
+},
 mainMenuListSelect: function(inSender, inItem) {
 switch(inSender.selectedItem.getValue("name")) {
 case "Search":
@@ -33,7 +36,14 @@ wire4: ["wm.Wire", {"expression":"\"7454739e907f5595ae61d84b8547f574\"","targetP
 }]
 }],
 layoutBox1: ["wm.Layout", {"_classes":{"domNode":["Page"]},"horizontalAlign":"left","styles":{},"verticalAlign":"top"}, {}, {
-layers1: ["wm.Layers", {"styles":{"backgroundColor":""}}, {}, {
+layers1: ["wm.Layers", {"defaultLayer":0,"styles":{"backgroundColor":""}}, {}, {
+layerLogin: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
+headerPanel4: ["wm.Panel", {"_classes":{"domNode":["HeaderPanel"]},"height":"48px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
+picture2: ["wm.Picture", {"height":"36px","source":"resources/images/logos/Android/wavemaker_36x36.png","styles":{},"width":"36px"}, {}],
+titleLabel4: ["wm.Label", {"align":"center","caption":"Bookshare","height":"100%","padding":"4","width":"100%"}, {}]
+}],
+pageContainer3: ["wm.PageContainer", {"deferLoad":true,"onSvarUserInfoSuccess":"homeLayer","pageName":"Login","subpageEventlist":{},"subpageMethodlist":{},"subpageProplist":{}}, {}]
+}],
 homeLayer: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
 headerPanel: ["wm.Panel", {"_classes":{"domNode":["HeaderPanel"]},"height":"48px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
 picture1: ["wm.Picture", {"height":"36px","source":"resources/images/logos/Android/wavemaker_36x36.png","styles":{},"width":"36px"}, {}],

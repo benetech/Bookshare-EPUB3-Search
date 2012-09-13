@@ -13,8 +13,12 @@
  */
 
 
+
 dojo.declare("Login", wm.Page, {
+	"preferredDevice": "phone",
     start: function() {
+        eval(wm.load("resources/javascript/md5.js"));
+        this.hex_md5 = hex_md5;
         if (window["PhoneGap"]) {
             this.restorePhonegapCredentials();
         } else {
@@ -26,18 +30,26 @@ dojo.declare("Login", wm.Page, {
     },
     loginButtonClick: function(inSender) {
         this.loginErrorMsg.setCaption("");
-        dojo.cookie("user", this.usernameInput.getDataValue(), {
+        var username = this.usernameInput.getDataValue();
+        app.varUser.setData({'email':username, "hashPass":this.hex_md5(this.passwordInput.getDataValue())});
+        dojo.cookie("user", username, {
             expires: 365
         });
     },
     
-    onLoginSuccess: function() {
+  svarUserInfoResult: function(inSender) {
+        inSender.getData() === null ? this.loginFailed() : this.svarUserInfoSuccess(inSender);
+  },
+        
+  svarUserInfoSuccess: function(inSender) {    
+       console.log("Welcome: " + inSender.getData().bookshare.user.displayName);
         if (window["PhoneGap"]) {
             this.phonegapCredentialStorage.setData({
-                name: this.usernameInput.getDataValue(),
-                dataValue: this.passwordInput.getDataValue()
+                name: app.varUser.getData().email,
+                dataValue:app.varUser.getData().hashPass
             });
         }
+        main.loginSuccess();
     },
     loginFailed: function(inResponse) {
         this.loginErrorMsg.setCaption("Invalid username or password.");
@@ -54,5 +66,8 @@ dojo.declare("Login", wm.Page, {
             }
         }
     },
-  _end: 0
+
+	_end: 0
 });
+
+
