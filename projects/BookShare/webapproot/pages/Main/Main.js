@@ -33,5 +33,21 @@ dojo.declare("Main", wm.Page, {
     sharedBookListSVarSuccess: function(inSender, inDeprecated) {
         this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result"));
     },
+    searchOptionsListSelect1: function(inSender, inItem) {
+        switch(inSender.selectedItem.getValue("dataValue")) {
+            case "author":
+                this.authorSearchSVar.update();
+                break;
+            case "all":
+                this.ftsSearchSVar.update();
+                break;
+            case "title":
+                this.titleSearchSVar.update();
+                break;
+            default:
+                this.bookListLayer.activate();
+        }
+        
+    },
     _end: 0
 });
