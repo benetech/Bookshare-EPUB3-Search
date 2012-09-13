@@ -8,6 +8,7 @@ dojo.declare("Main", wm.Page, {
         this.homeLayer.activate();
     },
     mainMenuListSelect: function(inSender, inItem) {
+        alert(inSender.selectedItem.getValue("name"));
         switch(inSender.selectedItem.getValue("name")) {
             case "Search":
                 this.searchLayer.activate();
@@ -15,9 +16,15 @@ dojo.declare("Main", wm.Page, {
             case "About App":
                 this.aboutAppLayer.activate();
                 break;
+            case "Latest":
+                this.bookListLayer.activate();
+                this.browseLatestSVar.update();
             default:
                 this.bookListLayer.activate();
         }
+    },
+    browseLatestSVarSuccess: function(inSender, inDeprecated) {
+        this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result"));
     },
     _end: 0
 });

@@ -6,3 +6,15 @@ dojo.declare("BookList", wm.Page, {
 
     _end: 0
 });
+wm.Variable.extend({
+    getJoin: function(inField, inString) {
+        if (inString === undefined) inString = ", ";
+        if (inField === undefined) inField = "dataValue";
+        var str = "";
+        this.forEach(function(item) {
+           if (str) str += inString;
+           str += item.getValue(inField);
+        });
+        return str;
+    }
+});
