@@ -577,7 +577,7 @@ dojo.declare("BookShare", wm.Application, {
 
 BookShare.extend({
  postInit: function() {
-    var api_key = wm.load("resources/passwords/api_key.txt");
+    var api_key = dojo.trim(wm.load("resources/passwords/api_key.txt"));
     app.varAPIKey.setValue("dataValue", api_key);
     this.inherited(arguments);
     },
