@@ -3,7 +3,9 @@ dojo.declare("BookList", wm.Page, {
     start: function() {
         
     },
-
+    onShow: function() {
+      this.bookList.deselectAll();  
+    },
     _end: 0
 });
 wm.Variable.extend({
