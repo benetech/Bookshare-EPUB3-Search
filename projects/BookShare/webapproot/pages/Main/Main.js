@@ -26,6 +26,9 @@ dojo.declare("Main", wm.Page, {
             case "Category":
                 this.layerCategory.activate();
                 break;
+            case "My Downloads":
+                this.layerDownloads.activate();
+                break;    
             case "About App":
                 this.layerAbout.activate();
                 break;
