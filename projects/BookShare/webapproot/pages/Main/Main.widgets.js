@@ -27,8 +27,8 @@ Main.widgets = {
 			}]
 		}]
 	}],
-	browsePopularSVar: ["wm.ServiceVariable", {"operation":"BrowserPopular","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
-		input: ["wm.ServiceInput", {"type":"BrowserPopularInputs"}, {}, {
+	browsePopularSVar: ["wm.ServiceVariable", {"operation":"AuthorSearch","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
+		input: ["wm.ServiceInput", {"type":"AuthorSearchInputs"}, {}, {
 			binding: ["wm.Binding", {}, {}, {
 				wire: ["wm.Wire", {"expression":"1","targetProperty":"page"}, {}],
 				wire1: ["wm.Wire", {"expression":"25","targetProperty":"limit"}, {}],

@@ -1,7 +1,19 @@
 dojo.declare("Main", wm.Page, {
+// comment this out to disable filtering by format
+//formats: ["EPUB3"],
+"preferredDevice": "phone",
 start: function() {
 },
-"preferredDevice": "phone",
+downloadTypeFilter: function(inValue) {
+var result = false;
+inValue.forEach(
+dojo.hitch(this, function(item) {
+if (dojo.indexOf(this.formats, item.getValue("dataValue")) != -1) result = true;
+})
+);
+console.log(result);
+return result;
+},
 loginSuccess: function(){
 this.homeLayer.activate();
 },
@@ -37,7 +49,10 @@ this.bookListLayer.activate();
 },
 sharedBookListSVarSuccess: function(inSender, inDeprecated) {
 this.bookListPageContainer.page.bookList.setScrollTop(0);
-this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result"));
+if (this.formats) {
+inSender.getValue("bookshare.book.list.result").setQuery({downloadFormat: dojo.hitch(this,"downloadTypeFilter")});
+}
+this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result.queriedItems"));
 },
 searchOptionsListSelect1: function(inSender, inItem) {
 switch(inSender.selectedItem.getValue("dataValue")) {
@@ -86,8 +101,8 @@ wire5: ["wm.Wire", {"expression":undefined,"source":"app.varUser.hashPass","targ
 }]
 }]
 }],
-browsePopularSVar: ["wm.ServiceVariable", {"operation":"BrowserPopular","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
-input: ["wm.ServiceInput", {"type":"BrowserPopularInputs"}, {}, {
+browsePopularSVar: ["wm.ServiceVariable", {"operation":"AuthorSearch","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
+input: ["wm.ServiceInput", {"type":"AuthorSearchInputs"}, {}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":"1","targetProperty":"page"}, {}],
 wire1: ["wm.Wire", {"expression":"25","targetProperty":"limit"}, {}],
