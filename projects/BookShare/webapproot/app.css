@@ -3,6 +3,13 @@
     font-size: 1.4Em ;
     color: white ;
 }
+.InnerHeading {
+    background-color: #FEBD57;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2Em;
+    text-align: center;
+}
 
 html.WMApp body .MainContent {
     background-color: #ffffff;

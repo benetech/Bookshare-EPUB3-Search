@@ -30,10 +30,12 @@ dojo.declare("Main", wm.Page, {
                 this.aboutAppLayer.activate();
                 break;
             case "Latest":
+                this.bookListPageContainer.setProp("listLabelCaption", "Latest");
                 this.bookListLayer.activate();
                 this.browseLatestSVar.update();
                 break;
             case "Popular":
+                this.bookListPageContainer.setProp("listLabelCaption", "Popular");
                 this.bookListLayer.activate();
                 this.browsePopularSVar.update();
                 break;
@@ -47,6 +49,7 @@ dojo.declare("Main", wm.Page, {
                 this.layerAbout.activate();
                 break;
             default:
+                this.bookListPageContainer.setProp("listLabelCaption", "");
                 this.bookListLayer.activate();
         }
     },
@@ -71,7 +74,10 @@ dojo.declare("Main", wm.Page, {
             default:
                 this.bookListLayer.activate();
         }
-        
+        this.updateSearchListLabel();
+    },
+    updateSearchListLabel: function() {
+        this.bookListPageContainer.setProp("listLabelCaption", "Search: " + this.searchText.getDataValue());    
     },
     _end: 0
 });
