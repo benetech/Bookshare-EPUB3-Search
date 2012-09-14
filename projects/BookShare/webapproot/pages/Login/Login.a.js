@@ -28,7 +28,7 @@ this.loadingDialog.setMargin(parseInt(this.loadingDialog.widgetToCover.margin) +
 loginButtonClick: function(inSender) {
 this.loginErrorMsg.setCaption("");
 var username = this.usernameInput.getDataValue();
-app.varUser.setData({'email':username, "hashPass":this.hex_md5(this.passwordInput.getDataValue())});
+app.varUser.setData({'email':username, "hashPass":this.hex_md5(this.passwordInput.getDataValue()), "pass":this.passwordInput.getDataValue()});
 dojo.cookie("user", username, {
 expires: 365
 });

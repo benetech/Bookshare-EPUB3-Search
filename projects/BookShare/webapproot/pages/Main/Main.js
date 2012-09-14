@@ -40,7 +40,7 @@ dojo.declare("Main", wm.Page, {
                 this.layerCategory.activate();
                 break;
             case "My Downloads":
-                this.layerDownloads.activate();
+                window.open("https://www.bookshare.org/bookHistory?j_userName=" + app.varUser.getValue("email") + "&j_password=" + app.varUser.getValue("pass"));
                 break;    
             case "About App":
                 this.layerAbout.activate();
