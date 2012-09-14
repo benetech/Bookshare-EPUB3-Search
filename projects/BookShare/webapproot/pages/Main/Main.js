@@ -1,7 +1,7 @@
 dojo.declare("Main", wm.Page, {
     
     // comment this out to disable filtering by format
-    //formats: ["EPUB3"],
+    //formats: ["EPUB 3"],
     "preferredDevice": "phone",
     start: function() {
         
