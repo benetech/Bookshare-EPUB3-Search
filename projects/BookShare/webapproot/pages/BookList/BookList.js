@@ -6,17 +6,32 @@ dojo.declare("BookList", wm.Page, {
     onShow: function() {
       this.bookList.deselectAll();  
     },
+    bookListScrollToBottom: function(inSender) {
+        if (this.bookList.dataSet) {
+            var dataSet = this.bookList.dataSet.isAncestorInstanceOf(wm.ServiceVariable);            
+        }
+        if (dataSet) {
+            this.pagingSVar.setService(dataSet.service);
+            this.pagingSVar.setOperation(dataSet.operation);
+            this.pagingSVar.input.setDataSet(dataSet.input);
+            
+            var page = this.bookList.dataSet.owner.getValue("page");
+            var maxPages = this.bookList.dataSet.owner.getValue("numPages");
+            if (page < maxPages) {
+                this.pagingSVar.input.setValue("page", 1 + page);                 
+                this.pagingSVar.update();
+                dataSet._requester = true; // fakery to tell wm.List that we are paging the dataSet
+            }
+        }
+    },
+    pagingSVarSuccess: function(inSender, inDeprecated) {
+        var data = inSender.getValue("bookshare.book.list.result");
+        this.bookList.dataSet.data._list = this.bookList.dataSet.data._list.concat(data.data._list);
+        this.bookList.setDataSet(this.bookList.dataSet);
+        
+        var dataSet = this.bookList.dataSet.isAncestorInstanceOf(wm.ServiceVariable);
+        this.bookList.dataSet.owner.setValue("page", inSender.getValue("bookshare.book.list.page"));
+        delete dataSet._requester;
+    },
     _end: 0
-});
-wm.Variable.extend({
-    getJoin: function(inField, inString) {
-        if (inString === undefined) inString = ", ";
-        if (inField === undefined) inField = "dataValue";
-        var str = "";
-        this.forEach(function(item) {
-           if (str) str += inString;
-           str += item.getValue(inField);
-        });
-        return str;
-    }
 });
