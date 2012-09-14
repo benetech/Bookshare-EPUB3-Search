@@ -10,6 +10,16 @@ html.WMApp body .MainContent {
     border-radius: 16px;
 }
 
+html .wm_default .wmbutton {
+background: -webkit-gradient(linear, center top, center bottom, from(#F37D23), color-stop(94%,#C2641A), to(#C2641A));
+background: -moz-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);
+background: -o-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);
+background: -ms-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F37D23', endColorstr='#C2641A',GradientType=0);
+color: white;
+font-weight: bold;
+}
+
 .MobileListStyle .wmlist-item {
 background: -webkit-gradient(linear, center top, center bottom, from(#F37D23), color-stop(94%,#C2641A), to(#C2641A));
 background: -moz-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);
