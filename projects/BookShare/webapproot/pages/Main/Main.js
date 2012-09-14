@@ -26,14 +26,15 @@ dojo.declare("Main", wm.Page, {
             case "Search":
                 this.searchLayer.activate();
                 break;
+            case "About App":
+                this.aboutAppLayer.activate();
+                break;
             case "Latest":
                 this.bookListLayer.activate();
-                this.listLabel.setCaption("Latest");
                 this.browseLatestSVar.update();
                 break;
             case "Popular":
                 this.bookListLayer.activate();
-                this.listLabel.setCaption("Popular");
                 this.browsePopularSVar.update();
                 break;
             case "Category":
@@ -46,7 +47,6 @@ dojo.declare("Main", wm.Page, {
                 this.layerAbout.activate();
                 break;
             default:
-                this.listLabel.setCaption("");
                 this.bookListLayer.activate();
         }
     },
