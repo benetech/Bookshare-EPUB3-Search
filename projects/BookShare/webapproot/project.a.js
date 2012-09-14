@@ -426,7 +426,7 @@ dojo.declare("BookShare", wm.Application, {
 	"phoneMain": "", 
 	"projectSubVersion": "Alpha", 
 	"projectVersion": 1, 
-	"saveCounter": 112, 
+	"saveCounter": 113, 
 	"showIOSPhoneGapBackButton": false, 
 	"studioVersion": "6.5.0.M4", 
 	"tabletMain": "", 
@@ -556,9 +556,9 @@ dojo.declare("BookShare", wm.Application, {
 			field2: ["wm.TypeDefinitionField", {"fieldName":"hashPass"}, {}]
 		}], 
 		AuthorSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"author":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/search"}, {}], 
-		BookIdLookup: ["wm.XhrDefinition", {"headers":{},"parameters":{"id":{"transmitType":"path","type":"String"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"ISBNLookupResponse","url":"https://api.bookshare.org/book"}, {}], 
+		BookIdLookup: ["wm.XhrDefinition", {"headers":{},"parameters":{"id":{"transmitType":"path","type":"String","bindable":true},"for":{"transmitType":"path","type":"String","bindable":true},"format":{"transmitType":"path","type":"String","bindable":true},"api_key":{"transmitType":"queryString","type":"String","bindable":true},"X-password":{"transmitType":"header","type":"String","bindable":true}},"returnType":"ISBNLookupResponse","url":"https://api.bookshare.org/book"}, {}], 
 		BrowseLatest: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/latest"}, {}], 
-		BrowserPopular: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/popular"}, {}], 
+		BrowsePopular: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/popular"}, {}], 
 		CategoryList: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"CategoryListResponse","url":"https://api.bookshare.org/reference/category/list"}, {}], 
 		CategorySearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"category":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/search"}, {}], 
 		DatePublishedSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"since":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/search"}, {}], 
@@ -593,6 +593,15 @@ html.WMApp body .MainContent {\
 background-color: #ffffff;\
 -webkit-border-radius: 16px;\
 border-radius: 16px;\
+}\
+html .wm_default .wmbutton {\
+background: -webkit-gradient(linear, center top, center bottom, from(#F37D23), color-stop(94%,#C2641A), to(#C2641A));\
+background: -moz-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);\
+background: -o-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);\
+background: -ms-linear-gradient(top, #F37D23 0%,#C2641A 94%,#C2641A 100%);\
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#F37D23", endColorstr="#C2641A",GradientType=0);\
+color: white;\
+font-weight: bold;\
 }\
 .MobileListStyle .wmlist-item {\
 background: -webkit-gradient(linear, center top, center bottom, from(#F37D23), color-stop(94%,#C2641A), to(#C2641A));\
