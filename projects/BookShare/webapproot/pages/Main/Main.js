@@ -31,7 +31,8 @@ dojo.declare("Main", wm.Page, {
         }
     },
     sharedBookListSVarSuccess: function(inSender, inDeprecated) {
-        this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result"));
+        this.bookListPageContainer.page.bookList.setScrollTop(0);
+        this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result"));        
     },
     searchOptionsListSelect1: function(inSender, inItem) {
         switch(inSender.selectedItem.getValue("dataValue")) {
