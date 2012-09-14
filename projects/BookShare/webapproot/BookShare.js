@@ -12,7 +12,7 @@ dojo.declare("BookShare", wm.Application, {
 	"phoneMain": "", 
 	"projectSubVersion": "Alpha0", 
 	"projectVersion": 1, 
-	"saveCounter": 124, 
+	"saveCounter": 136, 
 	"showIOSPhoneGapBackButton": false, 
 	"studioVersion": "6.5.0.M4", 
 	"tabletMain": "", 
@@ -139,7 +139,8 @@ dojo.declare("BookShare", wm.Application, {
 		}], 
 		user: ["wm.TypeDefinition", {}, {}, {
 			field1: ["wm.TypeDefinitionField", {"fieldName":"email"}, {}],
-			field2: ["wm.TypeDefinitionField", {"fieldName":"hashPass"}, {}]
+			field2: ["wm.TypeDefinitionField", {"fieldName":"hashPass"}, {}],
+			field3: ["wm.TypeDefinitionField", {"fieldName":"pass"}, {}]
 		}], 
 		AuthorSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"author":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/search"}, {}], 
 		BookIdLookup: ["wm.XhrDefinition", {"headers":{},"parameters":{"id":{"transmitType":"path","type":"String","bindable":true},"for":{"transmitType":"path","type":"String","bindable":true},"format":{"transmitType":"path","type":"String","bindable":true},"api_key":{"transmitType":"queryString","type":"String","bindable":true},"X-password":{"transmitType":"header","type":"String","bindable":true}},"returnType":"ISBNLookupResponse","url":"https://api.bookshare.org/book"}, {}], 
