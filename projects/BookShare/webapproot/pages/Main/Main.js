@@ -26,9 +26,6 @@ dojo.declare("Main", wm.Page, {
             case "Search":
                 this.searchLayer.activate();
                 break;
-            case "About App":
-                this.aboutAppLayer.activate();
-                break;
             case "Latest":
                 this.bookListPageContainer.setProp("listLabelCaption", "Latest");
                 this.bookListLayer.activate();
