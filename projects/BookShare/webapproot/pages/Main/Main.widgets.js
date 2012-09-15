@@ -90,6 +90,45 @@ Main.widgets = {
 			wire: ["wm.Wire", {"expression":undefined,"source":"bookListLayer","targetProperty":"loadingDialog"}, {}]
 		}]
 	}],
+	categorySVar: ["wm.ServiceVariable", {"operation":"CategoryList","service":"xhrService"}, {}, {
+		binding: ["wm.Binding", {}, {}, {
+			wire: ["wm.Wire", {"expression":undefined,"source":"layerCategory","targetProperty":"loadingDialog"}, {}]
+		}],
+		input: ["wm.ServiceInput", {"type":"CategoryListInputs"}, {}, {
+			binding: ["wm.Binding", {}, {}, {
+				wire: ["wm.Wire", {"expression":"1","targetProperty":"page"}, {}],
+				wire1: ["wm.Wire", {"expression":"50","targetProperty":"limit"}, {}],
+				wire2: ["wm.Wire", {"expression":"\"json\"","targetProperty":"format"}, {}],
+				wire3: ["wm.Wire", {"expression":undefined,"source":"app.varUser.email","targetProperty":"for"}, {}],
+				wire4: ["wm.Wire", {"expression":undefined,"source":"app.varAPIKey.dataValue","targetProperty":"api_key"}, {}],
+				wire5: ["wm.Wire", {"expression":undefined,"source":"app.varUser.hashPass","targetProperty":"X-password"}, {}]
+			}]
+		}]
+	}],
+	categorySearchSVar: ["wm.ServiceVariable", {"operation":"CategorySearch","service":"xhrService"}, {"onSuccess":"bookListNavCall","onSuccess1":"bookListLayer","onSuccess2":"sharedBookListSVarSuccess"}, {
+		binding: ["wm.Binding", {}, {}, {
+			wire: ["wm.Wire", {"expression":undefined,"source":"bookListLayer","targetProperty":"loadingDialog"}, {}]
+		}],
+		input: ["wm.ServiceInput", {"type":"CategorySearchInputs"}, {}, {
+			binding: ["wm.Binding", {}, {}, {
+				wire: ["wm.Wire", {"expression":"1","targetProperty":"page"}, {}],
+				wire1: ["wm.Wire", {"expression":"25","targetProperty":"limit"}, {}],
+				wire2: ["wm.Wire", {"expression":"\"json\"","targetProperty":"format"}, {}],
+				wire3: ["wm.Wire", {"expression":undefined,"source":"app.varUser.email","targetProperty":"for"}, {}],
+				wire4: ["wm.Wire", {"expression":undefined,"source":"app.varAPIKey.dataValue","targetProperty":"api_key"}, {}],
+				wire5: ["wm.Wire", {"expression":undefined,"source":"app.varUser.hashPass","targetProperty":"X-password"}, {}],
+				wire6: ["wm.Wire", {"expression":undefined,"source":"categoryList.selectedItem.name","targetProperty":"category"}, {}]
+			}]
+		}]
+	}],
+	bookListNavCall: ["wm.NavigationCall", {"operation":"gotoPageContainerPage"}, {}, {
+		input: ["wm.ServiceInput", {"type":"gotoPageContainerPageInputs"}, {}, {
+			binding: ["wm.Binding", {}, {}, {
+				wire: ["wm.Wire", {"expression":"\"BookList\"","targetProperty":"pageName"}, {}],
+				wire1: ["wm.Wire", {"expression":undefined,"source":"bookListPageContainer","targetProperty":"pageContainer"}, {}]
+			}]
+		}]
+	}],
 	layoutBox1: ["wm.Layout", {"_classes":{"domNode":["Page"]},"horizontalAlign":"left","styles":{},"verticalAlign":"top"}, {}, {
 		layers1: ["wm.Layers", {"defaultLayer":0,"styles":{"backgroundColor":""}}, {}, {
 			layerLogin: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
@@ -97,7 +136,7 @@ Main.widgets = {
 					picture2: ["wm.Picture", {"height":"36px","source":"resources/images/logos/Android/wavemaker_36x36.png","styles":{},"width":"36px"}, {}],
 					titleLabel4: ["wm.Label", {"align":"center","caption":"Bookshare","height":"100%","padding":"4","width":"100%"}, {}]
 				}],
-				loginPageContainer3: ["wm.PageContainer", {"_classes":{"domNode":["MainContent"]},"border":"6","borderColor":"#FEBD57","deferLoad":true,"margin":"6","onSvarUserInfoSuccess":"homeLayer","pageName":"Login","subpageEventlist":{},"subpageMethodlist":{},"subpageProplist":{}}, {}]
+				loginPageContainer: ["wm.PageContainer", {"_classes":{"domNode":["MainContent"]},"border":"6","borderColor":"#FEBD57","deferLoad":true,"margin":"6","onSvarUserInfoSuccess":"homeLayer","pageName":"Login","subpageEventlist":{},"subpageMethodlist":{},"subpageProplist":{}}, {}]
 			}],
 			homeLayer: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
 				headerPanel: ["wm.Panel", {"_classes":{"domNode":["HeaderPanel"]},"height":"48px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
@@ -132,7 +171,7 @@ Main.widgets = {
 					backButton1: ["wm.MobileIconButton", {"border":"0","desktopHeight":"36px","direction":"back","source":"resources/images/logos/Android/wavemaker_36x36.png","width":"70px"}, {"onclick":"app._onBack"}],
 					titleLabel1: ["wm.Label", {"align":"center","caption":"Bookshare","height":"100%","padding":"4","width":"100%"}, {}]
 				}],
-				bookListPageContainer: ["wm.PageContainer", {"_classes":{"domNode":["MainContent"]},"border":"6","borderColor":"#febd57","deferLoad":true,"margin":"6","pageName":"BookList","styles":{"backgroundColor":"#ffffff"},"subpageEventlist":{"onList1Select":"bookList.onSelect"},"subpageMethodlist":{},"subpageProplist":{"bookListDataSet":"bookList.dataSet","bookListSelectedItem":"bookList.selectedItem","listLabelCaption":"listLabel.caption","listLabelShowing":"listLabel.showing"}}, {"onList1Select":"bookDetailsLayer"}]
+				bookListPageContainer: ["wm.PageContainer", {"_classes":{"domNode":["MainContent"]},"border":"6","borderColor":"#febd57","deferLoad":true,"listLabelCaption":"","margin":"6","pageName":"BookList","styles":{"backgroundColor":"#ffffff"},"subpageEventlist":{"onList1Select":"bookList.onSelect"},"subpageMethodlist":{},"subpageProplist":{"bookListDataSet":"bookList.dataSet","bookListSelectedItem":"bookList.selectedItem","listLabelCaption":"listLabel.caption","listLabelShowing":"listLabel.showing"}}, {"onList1Select":"bookDetailsLayer"}]
 			}],
 			bookDetailsLayer: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
 				headerPanel2: ["wm.Panel", {"_classes":{"domNode":["HeaderPanel"]},"height":"48px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
@@ -150,7 +189,11 @@ Main.widgets = {
 					backButton4: ["wm.MobileIconButton", {"border":"0","desktopHeight":"36px","direction":"back","source":"resources/images/logos/Android/wavemaker_36x36.png","width":"70px"}, {"onclick":"app._onBack"}],
 					titleLabel5: ["wm.Label", {"align":"center","caption":"Bookshare","height":"100%","padding":"4","width":"100%"}, {}]
 				}],
-				categoryPageContainer: ["wm.PageContainer", {"_classes":{"domNode":["MainContent"]},"border":"6","borderColor":"#febd57","deferLoad":true,"margin":"6","styles":{"backgroundColor":"#ffffff"},"subpageEventlist":{},"subpageMethodlist":{},"subpageProplist":{}}, {}]
+				categoryList: ["wm.List", {"_classes":{"domNode":["MobileListStyle"]},"border":"0","columns":[{"show":true,"field":"name","title":"Name","width":"100%","align":"left","formatFunc":"","editorProps":{"restrictValues":true},"mobileColumn":false},{"show":false,"field":"PHONE COLUMN","title":"-","width":"100%","align":"left","expression":"\"<div class='MobileRowTitle'>Name: \" + ${name} + \"</div>\"\n","mobileColumn":true},{"show":true,"controller":"rightarrow","width":"20px","title":"-","field":"_rightArrow","mobileColumn":true}],"headerVisible":false,"height":"100%","margin":"0","minDesktopHeight":60,"rightNavArrow":true,"styleAsGrid":false}, {"onSelect":"categorySearchSVar"}, {
+					binding: ["wm.Binding", {}, {}, {
+						wire: ["wm.Wire", {"expression":undefined,"source":"categorySVar.bookshare.category.result","targetProperty":"dataSet"}, {}]
+					}]
+				}]
 			}],
 			layerAbout: ["wm.Layer", {"borderColor":"","caption":"layer2","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
 				headerPanel6: ["wm.Panel", {"_classes":{"domNode":["HeaderPanel"]},"height":"48px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {

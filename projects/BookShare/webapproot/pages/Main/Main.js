@@ -40,6 +40,7 @@ dojo.declare("Main", wm.Page, {
                 this.browsePopularSVar.update();
                 break;
             case "Category":
+                this.categorySVar.update();
                 this.layerCategory.activate();
                 break;
             case "My Downloads":
