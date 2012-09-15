@@ -13,8 +13,8 @@ if (dataSet) {
 this.pagingSVar.setService(dataSet.service);
 this.pagingSVar.setOperation(dataSet.operation);
 this.pagingSVar.input.setDataSet(dataSet.input);
-var page = this.bookList.dataSet.owner.getValue("page");
-var maxPages = this.bookList.dataSet.owner.getValue("numPages");
+var page = this.bookList.dataSet.owner.owner.getValue("page");
+var maxPages = this.bookList.dataSet.owner.owner.getValue("numPages");
 if (page < maxPages) {
 this.pagingSVar.input.setValue("page", 1 + page);
 this.pagingSVar.update();
