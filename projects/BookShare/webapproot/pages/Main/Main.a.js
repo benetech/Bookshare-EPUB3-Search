@@ -286,7 +286,7 @@ aboutPageContainer: ["wm.PageContainer", {"_classes":{"domNode":["MainContent"]}
 }]
 }],
 panel1: ["wm.Panel", {"height":"25px","horizontalAlign":"left","layoutKind":"left-to-right","padding":"0,2,2,2","verticalAlign":"middle","width":"100%"}, {}, {
-label1: ["wm.Label", {"caption":"&copy;2012 Benetech, VMware","height":"16px","padding":"0","singleLine":false,"styles":{"fontSize":"9px"},"width":"156px"}, {}],
+label1: ["wm.Label", {"caption":"&copy;2012 Benetech.","height":"16px","padding":"0","singleLine":false,"styles":{"fontSize":"9px"},"width":"156px"}, {}],
 spacer1: ["wm.Spacer", {"height":"48px","width":"100%"}, {}],
 gadgetFacebookLikeButton1: ["wm.gadget.FacebookLikeButton", {"height":"21px","href":"http://www.bookshare.org","layout":"button_count","width":"95px"}, {}]
 }]
