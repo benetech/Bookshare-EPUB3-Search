@@ -2,6 +2,7 @@
 *.class
 *#*
 *~
+projects/BookShare/BookShare.xml
 projects/BookShare/webapproot/WEB-INF/classes/*
 projects/BookShare/webapproot/WEB-INF/lib/*
 projects/BookShare/webapproot/resources/passwords/*
