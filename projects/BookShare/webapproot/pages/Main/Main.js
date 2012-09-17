@@ -36,9 +36,13 @@ dojo.declare("Main", wm.Page, {
                 this.bookListLayer.activate();
                 this.browsePopularSVar.update();
                 break;
-            case "Category":
+            case "By Category":
                 this.categorySVar.update();
                 this.layerCategory.activate();
+                break;
+            case "By Grade":
+                this.gradeListSVar.update();
+                this.layerGrade.activate();
                 break;
             case "My Downloads":
                 window.open("https://www.bookshare.org/bookHistory?j_userName=" + app.varUser.getValue("email") + "&j_password=" + app.varUser.getValue("pass"));
