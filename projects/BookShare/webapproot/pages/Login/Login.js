@@ -31,6 +31,7 @@ dojo.declare("Login", wm.Page, {
     loginButtonClick: function(inSender) {
         this.loginErrorMsg.setCaption("");
         var username = this.usernameInput.getDataValue();
+        
         app.varUser.setData({'email':username, "hashPass":this.hex_md5(this.passwordInput.getDataValue()), "pass":this.passwordInput.getDataValue()});
         dojo.cookie("user", username, {
             expires: 365
@@ -62,7 +63,7 @@ dojo.declare("Login", wm.Page, {
             this.usernameInput.setDataValue(username);
             this.passwordInput.setDataValue(password);
             if (username && password) {
-                this.loginVariable1.update();
+                this.loginButton.onclick();
             }
         }
     },
