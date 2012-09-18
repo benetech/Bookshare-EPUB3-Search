@@ -4,7 +4,7 @@ dojo.declare("Main", wm.Page, {
     //formats: ["EPUB 3"],
     "preferredDevice": "phone",
     start: function() {
-        
+        dojo.attr(this.logo.img, "alt", "Bookshare Logo");
     },
     downloadTypeFilter: function(inValue) {
         var result = false; 
@@ -80,6 +80,15 @@ dojo.declare("Main", wm.Page, {
     },
     updateSearchListLabel: function() {
         this.bookListPageContainer.setProp("listLabelCaption", "Search: " + this.searchText.getDataValue());    
+    },
+    layers1Change: function(inSender, inIndex) {
+        if (inIndex <= 1) {
+            this.backButton.hide();
+            this.headerPanel.setHeight("48px");
+        } else {
+            this.backButton.show();
+            this.headerPanel.setHeight("30px");
+        }
     },
     _end: 0
 });
