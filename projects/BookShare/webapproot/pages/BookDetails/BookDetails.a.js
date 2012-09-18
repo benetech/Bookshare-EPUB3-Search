@@ -4,7 +4,7 @@ start: function() {
 },
 downloadSVarSuccess: function(inSender, inDeprecated) {
 var value = inSender.getValue("dataValue") || "";
-var code = (value.match(/\<status\-code\>(\d+)/) || [])[1]
+var code = (value.match(/\<status\-code\>(\d+)/) || [])[1];
 switch(code) {
 case "42":
 case "40":
@@ -17,7 +17,14 @@ case "60":
 app.alert("The mobile application does not have access to this content, please go to http://bookshare.com");
 break;
 default:
-window.open("https://www.bookshare.org/bookHistory?j_userName=" + app.varUser.getValue("email") + "&j_password=" + app.varUser.getValue("pass"));
+this.notifyDownloadSuccess.update();
+/* Sadly, IOS popup blocker blocks windows that are opened after a delay rather than directly triggered
+* by a user event.  All wm.Button onClick events contain a short delay and can't be used to open the window.
+* Similarly, the ServiceVariable onSuccess event handler can't open a new window.
+* Connect to the domNode's onClick event directly to open the new window and avoid the IOS popup blocker.
+* For the same reason, ontouchstart is needed for real mobile devices as onclick has delays imposed by the browser.
+*/
+this._openQueueConnect = this.connect(app.confirmDialog.button1.domNode, wm.isFakeMobile ? "onclick" : "ontouchstart", this, "openQueue");
 }
 },
 bookDetailsSVarSuccess: function(inSender, inDeprecated) {
@@ -31,6 +38,16 @@ found = true;
 });
 }
 this.bookDownloadButton.setDisabled(!found);
+},
+openQueue: function(inSender, inResult) {
+var url = "https://www.bookshare.org/bookHistory?j_userName=" + app.varUser.getValue("email") + "&j_password=" + app.varUser.getValue("pass");
+window.open(url);
+},
+/* Failure to disconnect means that all uses of the confirm dialog will open the users history */
+notifyDownloadSuccessClose: function(inSender) {
+this.disconnect(this._openQueueConnect);
+/* Dismiss this as button1 "View Queue" will never have its normal onclick event fire due to the window change blocking the full event */
+app.confirmDialog.hide();
 },
 _end: 0
 });
@@ -63,6 +80,15 @@ wire1: ["wm.Wire", {"expression":"3","targetProperty":"version"}, {}],
 wire2: ["wm.Wire", {"expression":undefined,"source":"app.varUser.email","targetProperty":"for"}, {}],
 wire3: ["wm.Wire", {"expression":undefined,"source":"app.varUser.hashPass","targetProperty":"X-password"}, {}],
 wire4: ["wm.Wire", {"expression":undefined,"source":"app.varAPIKey.dataValue","targetProperty":"api_key"}, {}]
+}]
+}]
+}],
+notifyDownloadSuccess: ["wm.NotificationCall", {"operation":"confirm"}, {"onClose":"notifyDownloadSuccessClose"}, {
+input: ["wm.ServiceInput", {"type":"confirmInputs"}, {}, {
+binding: ["wm.Binding", {}, {}, {
+wire: ["wm.Wire", {"expression":"\"Your book has been added to your queue\"","targetProperty":"text"}, {}],
+wire1: ["wm.Wire", {"expression":"\"View Queue\"","targetProperty":"OKButtonText"}, {}],
+wire2: ["wm.Wire", {"expression":"\"Continue Browsing\"","targetProperty":"CancelButtonText"}, {}]
 }]
 }]
 }],
