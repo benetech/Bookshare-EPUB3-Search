@@ -29,6 +29,15 @@ BookDetails.widgets = {
 			}]
 		}]
 	}],
+	notifyDownloadSuccess: ["wm.NotificationCall", {"operation":"confirm"}, {"onClose":"notifyDownloadSuccessClose"}, {
+		input: ["wm.ServiceInput", {"type":"confirmInputs"}, {}, {
+			binding: ["wm.Binding", {}, {}, {
+				wire: ["wm.Wire", {"expression":"\"Your book has been added to your queue\"","targetProperty":"text"}, {}],
+				wire1: ["wm.Wire", {"expression":"\"View Queue\"","targetProperty":"OKButtonText"}, {}],
+				wire2: ["wm.Wire", {"expression":"\"Continue Browsing\"","targetProperty":"CancelButtonText"}, {}]
+			}]
+		}]
+	}],
 	layoutBox1: ["wm.Layout", {"horizontalAlign":"left","verticalAlign":"top"}, {}, {
 		panel3: ["wm.Panel", {"_classes":{"domNode":["BookHeaderPanel"]},"fitToContentHeight":true,"height":"60px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
 			titleLabel: ["wm.Label", {"autoSizeHeight":true,"height":"20px","minDesktopHeight":20,"minHeight":20,"padding":"4","singleLine":false,"width":"100%"}, {}, {

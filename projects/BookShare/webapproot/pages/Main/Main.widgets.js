@@ -159,8 +159,8 @@ Main.widgets = {
 	}],
 	layoutBox1: ["wm.Layout", {"_classes":{"domNode":["Page"]},"horizontalAlign":"left","styles":{},"verticalAlign":"top"}, {}, {
 		headerPanel: ["wm.Panel", {"_classes":{"domNode":["HeaderPanel"]},"height":"48px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
-			backButton: ["wm.MobileIconButton", {"border":"0","desktopHeight":"36px","direction":"back","height":"30px","mobileHeight":"30px","showing":false,"source":"resources/images/logos/Android/wavemaker_36x36.png","width":"70px"}, {"onclick":"app._onBack"}],
-			logo: ["wm.Picture", {"aspect":"h","height":"100%","source":"resources/images/logos/bookshare_48.png","styles":{},"width":"100%"}, {}]
+			backButton: ["wm.MobileIconButton", {"border":"0","desktopHeight":"36px","direction":"back","height":"46px","margin":"4,24,4,4","mobileHeight":"46px","showing":false,"source":"resources/images/logos/Android/wavemaker_36x36.png","width":"90px"}, {"onclick":"app._onBack"}],
+			logo: ["wm.Picture", {"height":"100%","source":"resources/images/logos/bookshare_48.png","styles":{},"width":"100%"}, {}]
 		}],
 		layers1: ["wm.Layers", {"defaultLayer":0,"styles":{"backgroundColor":""}}, {"onchange":"layers1Change"}, {
 			layerLogin: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
