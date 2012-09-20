@@ -2,8 +2,12 @@
 *.class
 *#*
 *~
-projects/BookShare/BookShare.xml
-projects/BookShare/webapproot/WEB-INF/classes/*
-projects/BookShare/webapproot/WEB-INF/lib/*
-projects/BookShare/webapproot/resources/passwords/*
-projects/BookShare/phonegap
+logs
+common/deployments.js
+projects/*/*.xml
+projects/*/webapproot/timestamp.txt
+projects/*/webapproot/WEB-INF/classes/*
+projects/*/webapproot/WEB-INF/lib/*
+projects/*/webapproot/resources/passwords/*
+projects/*/phonegap
+projects/*/dist
