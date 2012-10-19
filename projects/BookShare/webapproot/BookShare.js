@@ -12,9 +12,8 @@ dojo.declare("BookShare", wm.Application, {
 	"phoneMain": "", 
 	"projectSubVersion": "Alpha0", 
 	"projectVersion": 1, 
-	"saveCounter": 160, 
 	"showIOSPhoneGapBackButton": false, 
-	"studioVersion": "6.5.0.M4", 
+	"studioVersion": "6.5.0.RELEASE", 
 	"tabletMain": "", 
 	"theme": "wm_default", 
 	"toastPosition": "br", 
@@ -165,9 +164,13 @@ dojo.declare("BookShare", wm.Application, {
 
 BookShare.extend({
  postInit: function() {
+     this.connect(this, "loadComponents", this, "setAPIKey");
+     this.inherited(arguments);
+ },
+ setAPIKey: function() {
     var api_key = dojo.trim(wm.load("resources/passwords/api_key.txt"));
     app.varAPIKey.setValue("dataValue", api_key);
-    this.inherited(arguments);
+    
     },
 	_end: 0
 });

@@ -17,7 +17,8 @@
 dojo.declare("Login", wm.Page, {
 	"preferredDevice": "phone",
     start: function() {
-        eval(wm.load("resources/javascript/md5.js"));
+        var md5text = wm.load("resources/javascript/md5.js");
+        eval(md5text);
         this.hex_md5 = hex_md5;
         if (window["PhoneGap"]) {
             this.restorePhonegapCredentials();

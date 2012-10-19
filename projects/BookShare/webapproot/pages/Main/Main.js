@@ -89,6 +89,18 @@ dojo.declare("Main", wm.Page, {
             this.backButton.setShowing(true);
         }
         this.updateImageSize();
+        
+        /* Desperate hack to load the facebook widget without it affecting initial load time.
+         * Explanation: The facebook widget requires loading of the facebook, gadget and iframe classes.
+         * Waiting for these impacts load time for starting the app.  Loading these later, when nothing
+         * else is loading means less impact on the user.
+         */
+        if (inIndex == 1 && !this.facebookWidget) {
+            this.facebookWidget = this.panel1.createComponents({facebookWidget: ["wm.gadget.FacebookLikeButton", 
+            {"height":"21px","href":"http://www.bookshare.org","layout":"button_count","width":"95px"}, {}]})[0];
+            this.panel1.reflow();
+        }
+
     },
     updateImageSize: function() {
         var maxImageWidth = 286;

@@ -1,8 +1,8 @@
 dojo.declare("BookList", wm.Page, {
 	"preferredDevice": "phone",
     start: function() {
-        
     },
+
     onShow: function() {
       this.bookList.deselectAll();  
     },
@@ -33,5 +33,13 @@ dojo.declare("BookList", wm.Page, {
         this.bookList.dataSet.owner.setValue("page", inSender.getValue("bookshare.book.list.page"));
         delete dataSet._requester;
     },
-    _end: 0
+   
+    scrollDownButtonClick: function(inSender) {
+        this.bookList.setScrollTop(this.bookList.getScrollTop() + this.bookList.getListNodeHeight()-30);        
+	},
+    
+	scrollUpButtonClick: function(inSender) {
+		 this.bookList.setScrollTop(this.bookList.getScrollTop() + 30 - this.bookList.getListNodeHeight());            
+	},
+	_end: 0
 });
