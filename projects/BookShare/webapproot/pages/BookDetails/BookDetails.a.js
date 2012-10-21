@@ -104,7 +104,7 @@ bookDownloadButton: ["wm.Button", {"caption":"Download","height":"100%","margin"
 formPanel: ["wm.FormPanel", {"captionAlign":"left","captionSize":"100px","height":"100%"}, {}, {
 panel2: ["wm.Panel", {"autoScroll":true,"height":"100%","horizontalAlign":"left","verticalAlign":"top","width":"100%"}, {}, {
 panel1: ["wm.Panel", {"fitToContentHeight":true,"height":"24px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
-label1: ["wm.Label", {"caption":"Author","padding":"4","styles":{"fontWeight":"bold"},"width":"100px"}, {}],
+label1: ["wm.Label", {"caption":"Author","padding":"4,4,4,0","styles":{"fontWeight":"bold"},"width":"100px"}, {}],
 authorListLabel: ["wm.Label", {"autoSizeHeight":true,"display":"Array","height":"8px","padding":"4","singleLine":false,"width":"100%"}, {}, {
 format: ["wm.ArrayFormatter", {}, {}],
 binding: ["wm.Binding", {}, {}, {
@@ -128,7 +128,7 @@ wire: ["wm.Wire", {"expression":"${bookDetailsSVar.publishDate}.substr(0,2) + \"
 }]
 }],
 panel4: ["wm.Panel", {"fitToContentHeight":true,"height":"24px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
-label2: ["wm.Label", {"caption":"Formats","padding":"4","styles":{"fontWeight":"bold"},"width":"100px"}, {}],
+label2: ["wm.Label", {"caption":"Formats","padding":"4,4,4,0","styles":{"fontWeight":"bold"},"width":"100px"}, {}],
 authorListLabel1: ["wm.Label", {"autoSizeHeight":true,"display":"Array","height":"8px","padding":"4","singleLine":false,"width":"100%"}, {}, {
 format: ["wm.ArrayFormatter", {}, {}],
 binding: ["wm.Binding", {}, {}, {

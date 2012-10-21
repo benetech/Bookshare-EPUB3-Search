@@ -213,11 +213,6 @@ wm.JsonRpcService.smdCache['wavemakerService.smd'] = {
 		"parameters": null,
 		"returnType": "java.lang.String"
 	}, {
-		"name": "getRuntimeAccess",
-		"operationType": null,
-		"parameters": null,
-		"returnType": "com.wavemaker.runtime.RuntimeAccess"
-	}, {
 		"name": "getServerTimeOffset",
 		"operationType": null,
 		"parameters": null,
@@ -254,6 +249,22 @@ wm.JsonRpcService.smdCache['wavemakerService.smd'] = {
 		"parameters": null,
 		"returnType": "com.wavemaker.runtime.service.TypeManager"
 	}, {
+		"name": "hostToDomain",
+		"operationType": null,
+		"parameters": [{
+			"name": "host",
+			"type": "java.lang.String"
+		}],
+		"returnType": "java.lang.String"
+	}, {
+		"name": "proxyCheck",
+		"operationType": null,
+		"parameters": [{
+			"name": "remoteURL",
+			"type": "java.lang.String"
+		}],
+		"returnType": null
+	}, {
 		"name": "remoteRESTCall",
 		"operationType": null,
 		"parameters": [{
@@ -273,14 +284,6 @@ wm.JsonRpcService.smdCache['wavemakerService.smd'] = {
 		"parameters": [{
 			"name": "internalRuntime",
 			"type": "com.wavemaker.runtime.server.InternalRuntime"
-		}],
-		"returnType": null
-	}, {
-		"name": "setRuntimeAccess",
-		"operationType": null,
-		"parameters": [{
-			"name": "runtimeAccess",
-			"type": "com.wavemaker.runtime.RuntimeAccess"
 		}],
 		"returnType": null
 	}, {
@@ -426,9 +429,8 @@ dojo.declare("BookShare", wm.Application, {
 	"phoneMain": "", 
 	"projectSubVersion": "Alpha0", 
 	"projectVersion": 1, 
-	"saveCounter": 136, 
 	"showIOSPhoneGapBackButton": false, 
-	"studioVersion": "6.5.0.M4", 
+	"studioVersion": "6.5.0.RELEASE", 
 	"tabletMain": "", 
 	"theme": "wm_default", 
 	"toastPosition": "br", 
@@ -563,8 +565,8 @@ dojo.declare("BookShare", wm.Application, {
 		CategoryList: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"CategoryListResponse","url":"https://api.bookshare.org/reference/category/list"}, {}], 
 		CategorySearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"category":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/search"}, {}], 
 		DatePublishedSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"since":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/search"}, {}], 
-		DownloadAsync: ["wm.XhrDefinition", {"headers":{},"parameters":{"content":{"transmitType":"path","type":"Number"},"version":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"String","url":"https://api.bookshare.org/download"}, {}], 
-		FullTextSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"searchFTS":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book"}, {}], 
+		DownloadAsync: ["wm.XhrDefinition", {"headers":{},"parameters":{"content":{"transmitType":"path","type":"Number"},"version":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"StringData","url":"https://api.bookshare.org/download"}, {}], 
+		FullTextSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"searchFTS":{"transmitType":"path","type":"String","bindable":true},"page":{"transmitType":"path","type":"Number","bindable":true},"limit":{"transmitType":"path","type":"Number","bindable":true},"for":{"transmitType":"path","type":"String","bindable":true},"format":{"transmitType":"path","type":"String","bindable":true},"api_key":{"transmitType":"queryString","type":"String","bindable":true},"X-password":{"transmitType":"header","type":"String","bindable":true}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book"}, {}], 
 		GradeList: ["wm.XhrDefinition", {"headers":{},"parameters":{"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"GradeListResponse","url":"https://api.bookshare.org/reference/grade/list"}, {}], 
 		GradeSearch: ["wm.XhrDefinition", {"headers":{},"parameters":{"grade":{"transmitType":"path","type":"String"},"page":{"transmitType":"path","type":"Number"},"limit":{"transmitType":"path","type":"Number"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"BrowseLatestResponse","url":"https://api.bookshare.org/book/search"}, {}], 
 		ISBNLookup: ["wm.XhrDefinition", {"headers":{},"parameters":{"isbn":{"transmitType":"path","type":"String"},"for":{"transmitType":"path","type":"String"},"format":{"transmitType":"path","type":"String"},"api_key":{"transmitType":"queryString","type":"String"},"X-password":{"transmitType":"header","type":"String"}},"returnType":"ISBNLookupResponse","url":"https://api.bookshare.org/book"}, {}], 
@@ -579,9 +581,13 @@ dojo.declare("BookShare", wm.Application, {
 
 BookShare.extend({
  postInit: function() {
+     this.connect(this, "loadComponents", this, "setAPIKey");
+     this.inherited(arguments);
+ },
+ setAPIKey: function() {
     var api_key = dojo.trim(wm.load("resources/passwords/api_key.txt"));
     app.varAPIKey.setValue("dataValue", api_key);
-    this.inherited(arguments);
+    
     },
 	_end: 0
 });
@@ -589,6 +595,13 @@ BookShare.prototype._css = '.HeaderPanel, .HeaderPanel .wmlabel {\
 font-weight: bold ;\
 font-size: 1.4Em ;\
 color: white ;\
+}\
+.InnerHeading {\
+background-color: #FEBD57;\
+color: white;\
+font-weight: bold;\
+font-size: 1.2Em;\
+text-align: center;\
 }\
 html.WMApp body .MainContent {\
 background-color: #ffffff;\
@@ -631,5 +644,13 @@ background: -moz-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);\
 background: -o-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);\
 background: -ms-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);\
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#6C88C7", endColorstr="#B0C6F5",GradientType=0);\
+}\
+/* Insures that the .wmSizeNode is full size so that when the user touches anywhere in the label\
+* widget, the text in the wmSizeNode is read\
+*/\
+html.WMApp body .FullSizeLabel .wmSizeNode {\
+width: 100%;\
+height: 100%;\
+display: block;\
 }\
 ';

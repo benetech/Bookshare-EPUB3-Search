@@ -56,3 +56,13 @@ background: -o-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);
 background: -ms-linear-gradient(top, #6C88C7 0%,#B0C6F5 20%,#B0C6F5 100%);
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6C88C7', endColorstr='#B0C6F5',GradientType=0);
 }
+
+
+/* Insures that the .wmSizeNode is full size so that when the user touches anywhere in the label
+ * widget, the text in the wmSizeNode is read
+ */
+html.WMApp body .FullSizeLabel .wmSizeNode {
+    width: 100%;
+    height: 100%;
+    display: block;
+}

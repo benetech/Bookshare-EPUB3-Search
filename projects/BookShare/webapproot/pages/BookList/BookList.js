@@ -35,11 +35,11 @@ dojo.declare("BookList", wm.Page, {
     },
    
     scrollDownButtonClick: function(inSender) {
-        this.bookList.setScrollTop(this.bookList.getScrollTop() + this.bookList.getListNodeHeight()-30);        
+        this.bookList.setScrollTop(this.bookList.getScrollTop() + this.bookList.getListNodeHeight()/2);        
 	},
     
 	scrollUpButtonClick: function(inSender) {
-		 this.bookList.setScrollTop(this.bookList.getScrollTop() + 30 - this.bookList.getListNodeHeight());            
+		 this.bookList.setScrollTop(this.bookList.getScrollTop() - this.bookList.getListNodeHeight()/2);            
 	},
 	_end: 0
 });

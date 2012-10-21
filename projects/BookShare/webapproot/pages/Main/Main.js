@@ -1,11 +1,24 @@
+wm.require("wm.List");
+wm.ListItem.extend({
+     create: function() {
+        this.inherited(arguments);
+        if (!this.domNode.id) {
+            dojo.addClass(this.domNode, 'wmlist-item');
+            this.rowId = this.list.nextRowId++;
+            this.domNode.id = this.list.getRuntimeId() + "_ITEM_" + this.rowId;
+            dojo.attr(this.domNode,"role", "button");
+        }
+    }
+});
+
 dojo.declare("Main", wm.Page, {
     
     // comment this out to disable filtering by format
     //formats: ["EPUB 3"],
     "preferredDevice": "phone",
-    start: function() {
-        dojo.attr(this.logo.img, "alt", "Bookshare Logo");
-        this.connect(app.appRoot, "resize", this, "updateImageSize");
+    start: function() {        
+        dojo.attr(this.logo.img, "alt", "Bookshare Logo");        
+        this.connect(app.appRoot, "resize", this, "updateImageSize");        
     },
     downloadTypeFilter: function(inValue) {
         var result = false; 
