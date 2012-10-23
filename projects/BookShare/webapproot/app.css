@@ -11,7 +11,7 @@
     text-align: center;
 }
 
-html.WMApp body .MainContent {
+html.WMApp body .wm_default .MainContent {
     background-color: #ffffff;
     -webkit-border-radius: 16px;
     border-radius: 16px;
