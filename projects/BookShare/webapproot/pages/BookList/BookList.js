@@ -1,6 +1,7 @@
 dojo.declare("BookList", wm.Page, {
 	"preferredDevice": "phone",
     start: function() {
+        dojo.attr(this.ariaRoleLabel.domNode, "role", "alert");
     },
 
     onShow: function() {
