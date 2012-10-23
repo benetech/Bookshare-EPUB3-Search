@@ -1,8 +1,6 @@
 dojo.declare("BookDetails", wm.Page, {
 "preferredDevice": "phone",
 start: function() {
-dojo.attr(this.ariaRoleLabel.domNode, "role", "alert");
-dojo.attr(this.downloadSuccessDialog.domNode, "role", "alert");
 },
 downloadSVarSuccess: function(inSender, inDeprecated) {
 var value = inSender.getValue("dataValue") || "";
@@ -28,6 +26,14 @@ this.notifyDownloadSuccess.update();
 */
 this._openQueueConnect = this.connect(app.confirmDialog.button1.domNode, wm.isFakeMobile ? "onclick" : "ontouchstart", this, "openQueue");
 }
+if (app.alertDialog && app.alertDialog.showing) {
+dojo.attr(app.alertDialog.domNode, "role", "alertdialog");
+app.alertDialog.domNode.focus();
+}
+if (app.confirmDialog && app.confirmDialog.showing) {
+dojo.attr(app.confirmDialog.domNode, "role", "alertdialog");
+app.confirmDialog.domNode.focus();
+}
 },
 bookDetailsSVarSuccess: function(inSender, inDeprecated) {
 var validFormats = main.formats || ["EPUB 3"];
@@ -51,15 +57,12 @@ this.disconnect(this._openQueueConnect);
 /* Dismiss this as button1 "View Queue" will never have its normal onclick event fire due to the window change blocking the full event */
 app.confirmDialog.hide();
 },
-downloadSuccessDialogShow: function(inSender) {
-inSender.focus();
-},
 _end: 0
 });
 
 BookDetails.widgets = {
 bookDetailsDataSet: ["wm.Variable", {"json":"{\"author\":[{\"dataValue\":\"Elizabeth Wood\"},{\"dataValue\":\"Justine Howard\"},{\"dataValue\":\"Pat Broadhead\"}],\"availableToDownload\":0,\"bookshareId\":\"548376\",\"briefSynopsis\":\"Providing high quality play experiences is an essential part of good early years education, but this can pose a challenge for practitioners who face pressure from a more didactic primary curriculum, and from parents worried that their children will \",\"category\":[{\"dataValue\":\"Nonfiction\"}],\"completeSynopsis\":\"Providing high quality play experiences is an essential part of good early years education, but this can pose a challenge for practitioners who face pressure from a more didactic primary curriculum, and from parents worried that their children will fail to acquire essential skills and knowledge.  By helping the reader to develop their understanding of the complex relationships between play and learning, this book examines current theoretical perspectives on play, alongside examples of recent and innovative play research from a range of disciplinary and methodological perspectives.  With contributions from leading play scholars, it brings together theory, research, policy and practice in relation to play and learning in early years settings.  The emphasis is on the relationship between play and learning, and play and pedagogy, and the need to understand these dimensions more substantially in order to teach with confidence.  Included are chapters on: - the influence of play on thinking, problem-solving and creativity - cooperative play and learning - play, risk and outdoor learning - learning to play in cultural context There are chapter objectives, reflective points, reflective tasks and suggestions for further reading throughout, to facilitate critical thinking and encourage independent study.  Suitable for early years practitioners, early childhood students at undergraduate and postgraduate levels, and all those who work with and care for young children, this is an exciting and thought-provoking book.\",\"contentId\":548376,\"copyright\":\"2010\",\"downloadFormat\":[{\"dataValue\":\"BRF\"},{\"dataValue\":\"DAISY\"}],\"dtbookSize\":928926,\"freelyAvailable\":0,\"images\":1,\"isbn13\":\"9781446244333\",\"language\":[{\"dataValue\":\"English US\"}],\"publishDate\":\"09122012\",\"publisher\":\"SAGE Press\",\"quality\":\"Publisher Quality\",\"title\":\"Play and Learning in the Early Years\"}","type":"BrowseLatestResponse.bookshare.book.list.result"}, {}],
-bookDetailsDataSetDataSet: ["wm.Property", {"bindSource":undefined,"bindTarget":1,"property":"bookDetailsDataSet.dataSet","type":"EntryData"}, {}],
+bookDetailsDataSetDataSet: ["wm.Property", {"bindSource":undefined,"bindTarget":1,"property":"bookDetailsDataSet.dataSet","type":"user"}, {}],
 bookDetailsSVar: ["wm.ServiceVariable", {"autoUpdate":true,"operation":"BookIdLookup","service":"xhrService"}, {"onSuccess":"bookDetailsSVarSuccess"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"layoutBox1","targetProperty":"loadingDialog"}, {}]
@@ -74,7 +77,7 @@ wire4: ["wm.Wire", {"expression":undefined,"source":"app.varAPIKey.dataValue","t
 }]
 }]
 }],
-downloadSVar: ["wm.ServiceVariable", {"operation":"DownloadAsync","service":"xhrService"}, {"onSuccess":"downloadSuccessDialog.show"}, {
+downloadSVar: ["wm.ServiceVariable", {"operation":"DownloadAsync","service":"xhrService"}, {"onSuccess":"notifyDownloadSuccess"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"formPanel","targetProperty":"loadingDialog"}, {}]
 }],
@@ -97,7 +100,6 @@ wire: ["wm.Wire", {"expression":"\"<div role='alertdialog'>Your book has been ad
 }]
 }]
 }],
-downloadSuccessDialog: ["wm.GenericDialog", {"button1Caption":"View Queue","button1Close":true,"button2Caption":"Continue Browsing","button2Close":true,"height":"101px","mobileHeight":"61px","title":"Download Successful","userPrompt":"Your book has been added to your queue"}, {"onShow":"downloadSuccessDialogShow"}],
 layoutBox1: ["wm.Layout", {"horizontalAlign":"left","verticalAlign":"top"}, {}, {
 panel3: ["wm.Panel", {"_classes":{"domNode":["BookHeaderPanel"]},"fitToContentHeight":true,"height":"60px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
 titleLabel: ["wm.Label", {"autoSizeHeight":true,"height":"20px","minDesktopHeight":20,"minHeight":20,"padding":"4","singleLine":false,"width":"100%"}, {}, {
@@ -149,7 +151,7 @@ wire: ["wm.Wire", {"expression":undefined,"source":"bookDetailsSVar.bookshare.bo
 }]
 }]
 }],
-ariaRoleLabel: ["wm.Label", {"_classes":{"domNode":["ARIARoleLabel"]},"height":"1px","padding":"0","width":"100%"}, {}, {
+ariaRoleLabel: ["wm.Label", {"_classes":{"domNode":["ARIARoleLabel"]},"ariaRole":"alert","height":"1px","padding":"0","width":"100%"}, {}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":"\"Book Details Page Loaded.  Showing book \" + ${bookDetailsSVar.bookshare.book.metadata.title} + \" by \" + ${bookDetailsSVar.bookshare.book.metadata.author.dataValue}","targetProperty":"caption"}, {}]
 }]

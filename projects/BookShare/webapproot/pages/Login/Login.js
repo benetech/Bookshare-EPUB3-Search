@@ -26,7 +26,6 @@ dojo.declare("Login", wm.Page, {
             this.usernameInput.focus();
         }
         this.loadingDialog.setMargin(parseInt(this.loadingDialog.widgetToCover.margin) + parseInt(this.loadingDialog.widgetToCover.border));
-        dojo.attr(this.loginErrorMsg.domNode, "role", "alert");
     },
     loginButtonClick: function(inSender) {
         this.loginErrorMsg.setCaption("");
@@ -74,7 +73,10 @@ dojo.declare("Login", wm.Page, {
         }
     },
 
-	_end: 0
+	showPasswordChkChange: function(inSender, inDisplayValue, inDataValue, inSetByCode) {
+        this.passwordInput.setPassword(!this.passwordInput.password);
+    },
+    _end: 0
 });
 
 

@@ -17,17 +17,18 @@ Login.widgets = {
 	layoutBox: ["wm.Layout", {}, {}, {
 		loginMainPanel: ["wm.Panel", {"enableTouchHeight":true,"height":"100%","horizontalAlign":"center","padding":"10","verticalAlign":"center","width":"100%"}, {}, {
 			loginLabel: ["wm.Label", {"_classes":{"domNode":["FullSizeLabel"]},"align":"center","caption":"Please login to use this service","height":"100%","padding":"4","width":"100%"}, {}],
-			loginInputPanel: ["wm.HeaderContentPanel", {"_classes":{"domNode":["rounded"]},"border":"2","desktopHeight":"222px","deviceType":null,"enableTouchHeight":true,"fitToContentHeight":true,"height":"230px","horizontalAlign":"center","margin":"10","mobileHeight":"290px","padding":"10","styles":{"color":""},"verticalAlign":"top","width":"390px"}, {"onEnterKeyPress":"loginButton.click"}, {
+			loginInputPanel: ["wm.HeaderContentPanel", {"_classes":{"domNode":["rounded"]},"border":"2","desktopHeight":"222px","deviceType":null,"enableTouchHeight":true,"fitToContentHeight":true,"height":"265px","horizontalAlign":"center","margin":"10","mobileHeight":"290px","padding":"10","styles":{"color":""},"verticalAlign":"top","width":"390px"}, {"onEnterKeyPress":"loginButton.click"}, {
 				panel1: ["wm.Panel", {"fitToContentHeight":true,"height":"136px","horizontalAlign":"center","verticalAlign":"middle","width":"100%"}, {}, {
 					usernameInput: ["wm.Text", {"caption":"Email","captionAlign":"left","captionPosition":"top","captionSize":"28px","dataValue":"","desktopHeight":"68px","displayValue":"","emptyValue":"emptyString","height":"68px","mobileHeight":"68px","width":"100%"}, {}],
 					passwordInput: ["wm.Text", {"caption":"Password","captionAlign":"left","captionPosition":"top","captionSize":"28px","dataValue":"","desktopHeight":"68px","displayValue":"","emptyValue":"emptyString","height":"68px","mobileHeight":"68px","password":true,"width":"100%"}, {}]
 				}],
 				loginButtonPanel: ["wm.Panel", {"height":"50px","horizontalAlign":"right","layoutKind":"left-to-right","padding":"4","width":"100%"}, {}, {
-					loginErrorMsg: ["wm.Label", {"align":"center","caption":" ","height":"100%","padding":"4","singleLine":false,"width":"100%"}, {}, {
+					loginErrorMsg: ["wm.Label", {"align":"center","ariaRole":"alert","caption":" ","height":"100%","padding":"4","singleLine":false,"width":"100%"}, {}, {
 						format: ["wm.DataFormatter", {}, {}]
 					}],
 					loginButton: ["wm.Button", {"borderColor":"#000000","caption":"Login","height":"100%","margin":"4","width":"90px"}, {"onclick":"loginButtonClick","onclick2":"loadingDialog.show","onclick3":"svarUserInfo"}]
-				}]
+				}],
+				showPasswordChk: ["wm.Checkbox", {"caption":"Show Password","captionAlign":"left","captionPosition":"right","captionSize":"100%","desktopHeight":"35px","displayValue":false,"height":"35px","width":"100%"}, {"onchange":"showPasswordChkChange"}]
 			}],
 			spacer1: ["wm.Spacer", {"height":"100%","width":"96px"}, {}]
 		}]

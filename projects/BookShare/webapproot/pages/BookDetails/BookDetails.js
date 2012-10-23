@@ -1,8 +1,7 @@
 dojo.declare("BookDetails", wm.Page, {
 	"preferredDevice": "phone",
     start: function() {
-        dojo.attr(this.ariaRoleLabel.domNode, "role", "alert");
-        dojo.attr(this.downloadSuccessDialog.domNode, "role", "alert");
+
     },
 
     downloadSVarSuccess: function(inSender, inDeprecated) {
@@ -28,9 +27,16 @@ dojo.declare("BookDetails", wm.Page, {
                  * Connect to the domNode's onClick event directly to open the new window and avoid the IOS popup blocker.
                  * For the same reason, ontouchstart is needed for real mobile devices as onclick has delays imposed by the browser.
                  */
-                this._openQueueConnect = this.connect(app.confirmDialog.button1.domNode, wm.isFakeMobile ? "onclick" : "ontouchstart", this, "openQueue");
+                this._openQueueConnect = this.connect(app.confirmDialog.button1.domNode, wm.isFakeMobile ? "onclick" : "ontouchstart", this, "openQueue");                
         }
-            
+        if (app.alertDialog && app.alertDialog.showing) {
+            dojo.attr(app.alertDialog.domNode, "role", "alertdialog");
+            app.alertDialog.domNode.focus();
+        }
+        if (app.confirmDialog && app.confirmDialog.showing) {
+             dojo.attr(app.confirmDialog.domNode, "role", "alertdialog");
+             app.confirmDialog.domNode.focus();    
+        }
     },
     bookDetailsSVarSuccess: function(inSender, inDeprecated) {
         var validFormats = main.formats || ["EPUB 3"];
@@ -55,9 +61,6 @@ dojo.declare("BookDetails", wm.Page, {
         
         /* Dismiss this as button1 "View Queue" will never have its normal onclick event fire due to the window change blocking the full event */
         app.confirmDialog.hide();
-    },
-    downloadSuccessDialogShow: function(inSender) {
-        inSender.focus();
     },
     _end: 0
 });

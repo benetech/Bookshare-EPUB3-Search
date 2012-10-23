@@ -97,9 +97,6 @@ dojo.declare("Main", wm.Page, {
     start: function() {        
         dojo.attr(this.logo.img, "alt", "Bookshare Logo");        
         this.connect(app.appRoot, "resize", this, "updateImageSize");  
-        dojo.attr(this.layoutBox1.domNode, "role", "application");
-        dojo.attr(this.mainMenuRoleLabel.domNode.firstChild,"role", "alert");
-        dojo.attr(this.searchLabel.domNode.firstChild,"role", "alert");  
         
     },
     downloadTypeFilter: function(inValue) {
