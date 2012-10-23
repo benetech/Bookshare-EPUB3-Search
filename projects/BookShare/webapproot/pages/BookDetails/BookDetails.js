@@ -1,7 +1,7 @@
 dojo.declare("BookDetails", wm.Page, {
 	"preferredDevice": "phone",
     start: function() {
-        
+        dojo.attr(this.ariaRoleLabel.domNode, "role", "alert");
     },
 
     downloadSVarSuccess: function(inSender, inDeprecated) {
