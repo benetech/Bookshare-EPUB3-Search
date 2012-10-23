@@ -18,7 +18,9 @@ dojo.declare("Main", wm.Page, {
     "preferredDevice": "phone",
     start: function() {        
         dojo.attr(this.logo.img, "alt", "Bookshare Logo");        
-        this.connect(app.appRoot, "resize", this, "updateImageSize");        
+        this.connect(app.appRoot, "resize", this, "updateImageSize");  
+        dojo.attr(this.mainMenuRoleLabel.domNode,"role", "alert");
+            dojo.attr(this.searchLabel.domNode,"role", "alert");  
     },
     downloadTypeFilter: function(inValue) {
         var result = false; 
@@ -123,6 +125,18 @@ dojo.declare("Main", wm.Page, {
             this.logo.setAspect("v");
         }
 
+    },
+    homeLayerShow: function(inSender) {
+        this.mainMenuRoleLabel.setCaption("Showing Main Menu");
+    },
+    homeLayerHide: function(inSender) {
+        this.mainMenuRoleLabel.setCaption("");
+    },
+    searchLayerShow: function(inSender) {
+        this.searchLabel.setCaption("Enter a search and then select button below");
+    },
+    searchLayerHide: function(inSender) {
+        this.searchLabel.setCaption("");        
     },
     _end: 0
 });
