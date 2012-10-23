@@ -2,6 +2,7 @@ dojo.declare("BookDetails", wm.Page, {
 	"preferredDevice": "phone",
     start: function() {
         dojo.attr(this.ariaRoleLabel.domNode, "role", "alert");
+        dojo.attr(this.downloadSuccessDialog.domNode, "role", "alert");
     },
 
     downloadSVarSuccess: function(inSender, inDeprecated) {
@@ -54,6 +55,9 @@ dojo.declare("BookDetails", wm.Page, {
         
         /* Dismiss this as button1 "View Queue" will never have its normal onclick event fire due to the window change blocking the full event */
         app.confirmDialog.hide();
+    },
+    downloadSuccessDialogShow: function(inSender) {
+        inSender.focus();
     },
     _end: 0
 });

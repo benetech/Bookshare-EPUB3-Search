@@ -29,7 +29,9 @@ dojo.attr(this.loginErrorMsg.domNode, "role", "alert");
 loginButtonClick: function(inSender) {
 this.loginErrorMsg.setCaption("");
 var username = this.usernameInput.getDataValue();
-app.varUser.setData({'email':username, "hashPass":this.hex_md5(this.passwordInput.getDataValue()), "pass":this.passwordInput.getDataValue()});
+app.varUser.setData({'email':username,
+"hashPass":this.hex_md5(this.passwordInput.getDataValue()),
+"pass":this.passwordInput.getDataValue()});
 dojo.cookie("user", username, {
 expires: 365
 });
@@ -42,9 +44,11 @@ var data = inSender.getData();
 if (!data || !data.bookshare) return this.loginFailed();
 console.log("Welcome: " + inSender.getData().bookshare.user.displayName);
 if (window["PhoneGap"]) {
+var varUserData = app.varUser.getData();
 this.phonegapCredentialStorage.setData({
-name: app.varUser.getData().email,
-dataValue:app.varUser.getData().hashPass
+email: varUserData.email,
+pass: varUserData.pass,
+dataValue:varUserData.hashPass
 });
 }
 main.loginSuccess();
@@ -54,8 +58,8 @@ this.loginErrorMsg.setCaption("Invalid username or password.");
 this.usernameInput.focus();
 },
 restorePhonegapCredentials: function() {
-var username = this.phonegapCredentialStorage.getValue("name");
-var password = this.phonegapCredentialStorage.getValue("dataValue");
+var username = this.phonegapCredentialStorage.getValue("email");
+var password = this.phonegapCredentialStorage.getValue("pass");
 if (username || password) {
 this.usernameInput.setDataValue(username);
 this.passwordInput.setDataValue(password);
@@ -68,7 +72,7 @@ _end: 0
 });
 
 Login.widgets = {
-phonegapCredentialStorage: ["wm.Variable", {"saveInPhonegap":true,"type":"EntryData"}, {}],
+phonegapCredentialStorage: ["wm.Variable", {"saveInPhonegap":true,"type":"user"}, {}],
 svarUserInfo: ["wm.ServiceVariable", {"operation":"UserInfo","service":"xhrService"}, {"onError":"loginFailed","onResult":"loadingDialog.hide","onSuccess":"svarUserInfoSuccess"}, {
 input: ["wm.ServiceInput", {"type":"UserInfoInputs"}, {}, {
 binding: ["wm.Binding", {}, {}, {

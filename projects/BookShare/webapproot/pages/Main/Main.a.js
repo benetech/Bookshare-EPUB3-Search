@@ -10,6 +10,80 @@ dojo.attr(this.domNode,"role", "button");
 }
 }
 });
+wm.List.extend({
+queryItem: function(query, inItem, inRowIndex) {
+var w = "*";
+var isMatch = true;
+for (var key in query) {
+if (this._columnsHash && this._columnsHash[key] && this._columnsHash[key].isCustomField) {
+var col = this._columnsHash[key];
+if (col.expression) {
+inItem[key] = wm.expression.getValue(col.expression, inItem, this.owner);
+} else if (col.formatFunc) {
+switch (col.formatFunc) {
+case 'wm_date_formatter':
+case 'Date (WaveMaker)':
+case 'wm_localdate_formatter':
+case 'Local Date (WaveMaker)':
+case 'wm_time_formatter':
+case 'Time (WaveMaker)':
+case 'wm_number_formatter':
+case 'Number (WaveMaker)':
+case 'wm_currency_formatter':
+case 'Currency (WaveMaker)':
+case 'wm_image_formatter':
+case 'Image (WaveMaker)':
+case 'wm_link_formatter':
+case 'Link (WaveMaker)':
+break;
+case 'wm_array_formatter':
+inItem[key] = this.arrayFormatter(key, col.formatProps, null, null, null, inItem[key]);
+break;
+default:
+if (!this.isDesignLoaded()) inItem[key] = dojo.hitch(this.owner, col.formatFunc)("", inRowIndex, dojo.indexOf(this.columns, col), key, {
+customStyles: [],
+customClasses: []
+}, inItem);
+}
+}
+}
+var a = inItem[key];
+if (dojo.isString(a)) a = a.replace(/\\([^\\])/g, "$1");
+var b = query[key];
+var matchStart = true;
+if (dojo.isString(b)) {
+b = b.replace(/\\([^\\])/g, "$1");
+if (b.charAt(0) == w) {
+b = b.substring(1);
+matchStart = false;
+}
+}
+if (b == w) continue;
+if (dojo.isString(a) && dojo.isString(b)) {
+if (b.charAt(b.length - 1) == w) b = b.slice(0, -1);
+a = a.toLowerCase();
+b = b.toLowerCase();
+var matchIndex = a.indexOf(b);
+if (matchIndex == -1 || matchIndex > 0 && matchStart) {
+isMatch = false;
+break;
+}
+} else if (a !== b) {
+isMatch = false;
+break;
+}
+}
+return isMatch;
+}
+});
+wm.PageContainer.extend({
+_onHideParent: function() {
+if (this.page) {
+wm.fire(this.page, "onHide");
+this.page.root.callOnHideParent();
+}
+}
+});
 dojo.declare("Main", wm.Page, {
 // comment this out to disable filtering by format
 //formats: ["EPUB 3"],
@@ -17,8 +91,9 @@ dojo.declare("Main", wm.Page, {
 start: function() {
 dojo.attr(this.logo.img, "alt", "Bookshare Logo");
 this.connect(app.appRoot, "resize", this, "updateImageSize");
-dojo.attr(this.mainMenuRoleLabel.domNode,"role", "alert");
-dojo.attr(this.searchLabel.domNode,"role", "alert");
+dojo.attr(this.layoutBox1.domNode, "role", "application");
+dojo.attr(this.mainMenuRoleLabel.domNode.firstChild,"role", "alert");
+dojo.attr(this.searchLabel.domNode.firstChild,"role", "alert");
 },
 downloadTypeFilter: function(inValue) {
 var result = false;
@@ -75,6 +150,9 @@ inSender.getValue("bookshare.book.list.result").setQuery({downloadFormat: dojo.h
 }
 this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result.queriedItems"));
 },
+clearBookList: function() {
+this.bookListPageContainer.setProp("bookListDataSet", null);
+},
 searchOptionsListSelect1: function(inSender, inItem) {
 switch(inSender.selectedItem.getValue("dataValue")) {
 case "author":
@@ -101,16 +179,6 @@ this.backButton.setShowing(false);
 this.backButton.setShowing(true);
 }
 this.updateImageSize();
-/* Desperate hack to load the facebook widget without it affecting initial load time.
-* Explanation: The facebook widget requires loading of the facebook, gadget and iframe classes.
-* Waiting for these impacts load time for starting the app.  Loading these later, when nothing
-* else is loading means less impact on the user.
-*/
-if (inIndex == 1 && !this.facebookWidget) {
-this.facebookWidget = this.panel1.createComponents({facebookWidget: ["wm.gadget.FacebookLikeButton",
-{"height":"21px","href":"http://www.bookshare.org","layout":"button_count","width":"95px"}, {}]})[0];
-this.panel1.reflow();
-}
 },
 updateImageSize: function() {
 var maxImageWidth = 286;
@@ -121,13 +189,17 @@ this.logo.setAspect("v");
 }
 },
 homeLayerShow: function(inSender) {
-this.mainMenuRoleLabel.setCaption("Showing Main Menu");
+wm.job("setAriaAlert", 3000, this, function() {
+this.mainMenuRoleLabel.setCaption("Main menu page is loaded");
+});
 },
 homeLayerHide: function(inSender) {
 this.mainMenuRoleLabel.setCaption("");
 },
 searchLayerShow: function(inSender) {
-this.searchLabel.setCaption("Enter a search and then select button below");
+wm.job("setAriaAlert", 1000, this, function() {
+this.searchLabel.setCaption("Search page is loaded, Enter a search and then select button below");
+});
 },
 searchLayerHide: function(inSender) {
 this.searchLabel.setCaption("");
@@ -149,7 +221,7 @@ wire4: ["wm.Wire", {"expression":"\"7454739e907f5595ae61d84b8547f574\"","targetP
 }]
 }]
 }],
-browseLatestSVar: ["wm.ServiceVariable", {"operation":"BrowseLatest","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
+browseLatestSVar: ["wm.ServiceVariable", {"operation":"BrowseLatest","service":"xhrService"}, {"onBeforeUpdate":"clearBookList","onSuccess":"sharedBookListSVarSuccess"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"bookListLayer","targetProperty":"loadingDialog"}, {}]
 }],
@@ -164,7 +236,7 @@ wire5: ["wm.Wire", {"expression":undefined,"source":"app.varUser.hashPass","targ
 }]
 }]
 }],
-browsePopularSVar: ["wm.ServiceVariable", {"operation":"BrowsePopular","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
+browsePopularSVar: ["wm.ServiceVariable", {"operation":"BrowsePopular","service":"xhrService"}, {"onBeforeUpdate":"clearBookList","onSuccess":"sharedBookListSVarSuccess"}, {
 input: ["wm.ServiceInput", {"type":"BrowsePopularInputs"}, {}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":"1","targetProperty":"page"}, {}],
@@ -179,7 +251,7 @@ binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"bookListLayer","targetProperty":"loadingDialog"}, {}]
 }]
 }],
-authorSearchSVar: ["wm.ServiceVariable", {"operation":"AuthorSearch","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
+authorSearchSVar: ["wm.ServiceVariable", {"operation":"AuthorSearch","service":"xhrService"}, {"onBeforeUpdate":"clearBookList","onSuccess":"sharedBookListSVarSuccess"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"bookListLayer","targetProperty":"loadingDialog"}, {}]
 }],
@@ -195,7 +267,7 @@ wire6: ["wm.Wire", {"expression":undefined,"source":"app.varUser.hashPass","targ
 }]
 }]
 }],
-titleSearchSVar: ["wm.ServiceVariable", {"operation":"TitleSearch","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
+titleSearchSVar: ["wm.ServiceVariable", {"operation":"TitleSearch","service":"xhrService"}, {"onBeforeUpdate":"clearBookList","onSuccess":"sharedBookListSVarSuccess"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"bookListLayer","targetProperty":"loadingDialog"}, {}]
 }],
@@ -211,7 +283,7 @@ wire6: ["wm.Wire", {"expression":"25","targetProperty":"limit"}, {}]
 }]
 }]
 }],
-ftsSearchSVar: ["wm.ServiceVariable", {"operation":"FullTextSearch","service":"xhrService"}, {"onSuccess":"sharedBookListSVarSuccess"}, {
+ftsSearchSVar: ["wm.ServiceVariable", {"operation":"FullTextSearch","service":"xhrService"}, {"onBeforeUpdate":"clearBookList","onSuccess":"sharedBookListSVarSuccess"}, {
 input: ["wm.ServiceInput", {"type":"FullTextSearchInputs"}, {}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"searchText.dataValue","targetProperty":"searchFTS"}, {}],
@@ -242,7 +314,7 @@ wire5: ["wm.Wire", {"expression":undefined,"source":"app.varUser.hashPass","targ
 }]
 }]
 }],
-categorySearchSVar: ["wm.ServiceVariable", {"operation":"CategorySearch","service":"xhrService"}, {"onSuccess":"bookListNavCall","onSuccess1":"bookListLayer","onSuccess2":"sharedBookListSVarSuccess"}, {
+categorySearchSVar: ["wm.ServiceVariable", {"operation":"CategorySearch","service":"xhrService"}, {"onBeforeUpdate":"clearBookList","onSuccess":"bookListNavCall","onSuccess1":"bookListLayer","onSuccess2":"sharedBookListSVarSuccess"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"bookListLayer","targetProperty":"loadingDialog"}, {}]
 }],
@@ -278,7 +350,7 @@ wire1: ["wm.Wire", {"expression":"25","targetProperty":"limit"}, {}]
 }]
 }]
 }],
-gradeSearchSVar: ["wm.ServiceVariable", {"operation":"GradeSearch","service":"xhrService"}, {"onSuccess":"bookListNavCall","onSuccess1":"bookListLayer","onSuccess2":"sharedBookListSVarSuccess"}, {
+gradeSearchSVar: ["wm.ServiceVariable", {"operation":"GradeSearch","service":"xhrService"}, {"onBeforeUpdate":"clearBookList","onSuccess":"bookListNavCall","onSuccess1":"bookListLayer","onSuccess2":"sharedBookListSVarSuccess"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"GradeList","targetProperty":"loadingDialog"}, {}]
 }],
@@ -303,18 +375,18 @@ layers1: ["wm.Layers", {"defaultLayer":0,"minDesktopHeight":280,"minHeight":280,
 layerLogin: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {}, {
 loginPageContainer: ["wm.PageContainer", {"_classes":{"domNode":["MainContent"]},"border":"6","borderColor":"#FEBD57","deferLoad":true,"margin":"6","pageName":"Login","subpageEventlist":{},"subpageMethodlist":{},"subpageProplist":{}}, {}]
 }],
-homeLayer: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {"onHide":"homeLayerHide","onShow":"homeLayerShow"}, {
-mainMenuRoleLabel: ["wm.Label", {"_classes":{"domNode":["ARIARoleLabel"]},"caption":"","height":"1px","padding":"0","width":"100%"}, {}],
+homeLayer: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {"onDeactivate":"homeLayerHide","onShow":"homeLayerShow"}, {
 mainMenuList: ["wm.List", {"_classes":{"domNode":["MobileListStyle","MainContent"]},"border":"6","borderColor":"#febd57","columns":[{"show":true,"field":"name","title":"Name","width":"100%","align":"left","formatFunc":"","editorProps":{"restrictValues":true},"expression":"","mobileColumn":false},{"show":false,"field":"dataValue","title":"DataValue","width":"100%","align":"left","formatFunc":"","editorProps":{"restrictValues":true},"mobileColumn":false},{"show":false,"field":"PHONE COLUMN","title":"-","width":"100%","align":"left","editorProps":{"restrictValues":true},"expression":" ${name} \n","isCustomField":true,"mobileColumn":true},{"show":true,"controller":"rightarrow","width":"20px","title":"-","field":"_rightArrow","mobileColumn":true}],"headerVisible":false,"height":"100%","manageHistory":false,"margin":"6","minDesktopHeight":60,"rightNavArrow":true,"styleAsGrid":false,"styles":{"backgroundColor":"#ffffff"}}, {"onSelect":"mainMenuListSelect","onSelect1":"mainMenuList.deselectAll"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"mainMenuVar","targetProperty":"dataSet"}, {}]
 }]
-}]
+}],
+mainMenuRoleLabel: ["wm.Label", {"caption":"","height":"1px","padding":"0","width":"100%"}, {}]
 }],
 searchLayer: ["wm.Layer", {"borderColor":"","caption":"layer1","horizontalAlign":"left","themeStyleType":"","verticalAlign":"top"}, {"onHide":"searchLayerHide","onShow":"searchLayerShow"}, {
 panel2: ["wm.Panel", {"_classes":{"domNode":["MainContent"]},"border":"6","borderColor":"#febd57","height":"100%","horizontalAlign":"left","layoutKind":"left-to-right","margin":"6","styles":{"backgroundColor":"#ffffff"},"verticalAlign":"top","width":"100%"}, {}, {
 formPanel1: ["wm.FormPanel", {"height":"100%"}, {}, {
-searchLabel: ["wm.Label", {"_classes":{"domNode":["FullSizeLabel"]},"align":"center","caption":"","padding":"4","singleLine":false,"width":"100%"}, {}],
+searchLabel: ["wm.Label", {"_classes":{"domNode":["FullSizeLabel"]},"align":"center","autoSizeHeight":true,"caption":"","padding":"4","singleLine":false,"width":"100%"}, {}],
 searchText: ["wm.Text", {"caption":"Search","captionSize":"120px","changeOnKey":true,"dataValue":undefined,"desktopHeight":"35px","displayValue":"","height":"35px","placeHolder":"Enter Search","width":"100%"}, {"onEnterKeyPress":"bookListLayer","onEnterKeyPress1":"ftsSearchSVar","onEnterKeyPress2":"updateSearchListLabel"}],
 searchOptionsList: ["wm.List", {"_classes":{"domNode":["MobileListStyle"]},"border":"0","columns":[{"show":true,"field":"name","title":"Name","width":"100%","align":"left","formatFunc":"","editorProps":{"restrictValues":true},"mobileColumn":false},{"show":false,"field":"dataValue","title":"DataValue","width":"100%","align":"left","formatFunc":"","editorProps":{"restrictValues":true},"mobileColumn":false},{"show":false,"field":"PHONE COLUMN","title":"-","width":"100%","align":"left","editorProps":{"restrictValues":true},"expression":"\"<div class='MobileRowTitle'>Name: \" + ${name} + \"</div>\"\n","mobileColumn":false},{"show":true,"controller":"rightarrow","width":"20px","title":"-","field":"_rightArrow","mobileColumn":true}],"headerVisible":false,"height":"100%","manageHistory":false,"margin":"0","minDesktopHeight":60,"rightNavArrow":true,"styleAsGrid":false}, {"onSelect":"bookListLayer","onSelect1":"searchOptionsListSelect1","onSelect2":"searchOptionsList.deselectAll","onShow":"searchOptionsList.selectAll"}, {
 binding: ["wm.Binding", {}, {}, {

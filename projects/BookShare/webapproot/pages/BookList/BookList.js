@@ -42,5 +42,15 @@ dojo.declare("BookList", wm.Page, {
 	scrollUpButtonClick: function(inSender) {
 		 this.bookList.setScrollTop(this.bookList.getScrollTop() - this.bookList.getListNodeHeight()/2);            
 	},
+	onHide: function(inSender) {
+		    this.ariaRoleLabel.setCaption("");
+	},
+    onShow: function(inSender) {
+        wm.job("setAriaAlert", 3000, this, function() {
+            if (!this.bookList.dataSet._requester && !this.ariaRoleLabel.caption) {
+                this.ariaRoleLabel.$.binding.wires.caption.refreshValue();
+            }
+        });
+    },
 	_end: 0
 });

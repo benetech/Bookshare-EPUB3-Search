@@ -13,7 +13,6 @@
  */
 
 
-
 dojo.declare("Login", wm.Page, {
 	"preferredDevice": "phone",
     start: function() {
@@ -33,7 +32,9 @@ dojo.declare("Login", wm.Page, {
         this.loginErrorMsg.setCaption("");
         var username = this.usernameInput.getDataValue();
         
-        app.varUser.setData({'email':username, "hashPass":this.hex_md5(this.passwordInput.getDataValue()), "pass":this.passwordInput.getDataValue()});
+        app.varUser.setData({'email':username, 
+                            "hashPass":this.hex_md5(this.passwordInput.getDataValue()), 
+                            "pass":this.passwordInput.getDataValue()});
         dojo.cookie("user", username, {
             expires: 365
         });
@@ -48,9 +49,11 @@ dojo.declare("Login", wm.Page, {
       if (!data || !data.bookshare) return this.loginFailed();
        console.log("Welcome: " + inSender.getData().bookshare.user.displayName);
         if (window["PhoneGap"]) {
+            var varUserData = app.varUser.getData();
             this.phonegapCredentialStorage.setData({
-                name: app.varUser.getData().email,
-                dataValue:app.varUser.getData().hashPass
+                email: varUserData.email,
+                pass: varUserData.pass,
+                dataValue:varUserData.hashPass
             });
         }
         main.loginSuccess();
@@ -60,8 +63,8 @@ dojo.declare("Login", wm.Page, {
         this.usernameInput.focus();
     },
     restorePhonegapCredentials: function() {        
-        var username = this.phonegapCredentialStorage.getValue("name");
-        var password = this.phonegapCredentialStorage.getValue("dataValue");
+        var username = this.phonegapCredentialStorage.getValue("email");
+        var password = this.phonegapCredentialStorage.getValue("pass");
         if (username || password) {
             this.usernameInput.setDataValue(username);
             this.passwordInput.setDataValue(password);

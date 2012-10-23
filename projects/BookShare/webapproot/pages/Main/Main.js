@@ -10,6 +10,84 @@ wm.ListItem.extend({
         }
     }
 });
+wm.List.extend({
+    queryItem: function(query, inItem, inRowIndex) {
+        var w = "*";
+        var isMatch = true;
+        for (var key in query) {
+            if (this._columnsHash && this._columnsHash[key] && this._columnsHash[key].isCustomField) {
+                var col = this._columnsHash[key];
+                if (col.expression) {
+                    inItem[key] = wm.expression.getValue(col.expression, inItem, this.owner);
+                } else if (col.formatFunc) {
+                    switch (col.formatFunc) {
+                    case 'wm_date_formatter':
+                    case 'Date (WaveMaker)':
+                    case 'wm_localdate_formatter':
+                    case 'Local Date (WaveMaker)':
+                    case 'wm_time_formatter':
+                    case 'Time (WaveMaker)':
+                    case 'wm_number_formatter':
+                    case 'Number (WaveMaker)':
+                    case 'wm_currency_formatter':
+                    case 'Currency (WaveMaker)':
+                    case 'wm_image_formatter':
+                    case 'Image (WaveMaker)':
+                    case 'wm_link_formatter':
+                    case 'Link (WaveMaker)':
+                        break;
+                    case 'wm_array_formatter':
+                        inItem[key] = this.arrayFormatter(key, col.formatProps, null, null, null, inItem[key]);
+                        break;
+                    default:
+                        if (!this.isDesignLoaded()) inItem[key] = dojo.hitch(this.owner, col.formatFunc)("", inRowIndex, dojo.indexOf(this.columns, col), key, {
+                            customStyles: [],
+                            customClasses: []
+                        }, inItem);
+                    }
+                }
+            }
+            var a = inItem[key];
+            if (dojo.isString(a)) a = a.replace(/\\([^\\])/g, "$1");
+            var b = query[key];
+            var matchStart = true;
+
+            if (dojo.isString(b)) {
+                b = b.replace(/\\([^\\])/g, "$1");
+                if (b.charAt(0) == w) {
+                    b = b.substring(1);
+                    matchStart = false;
+                }
+            }
+
+            if (b == w) continue;
+
+            if (dojo.isString(a) && dojo.isString(b)) {
+                if (b.charAt(b.length - 1) == w) b = b.slice(0, -1);
+                a = a.toLowerCase();
+                b = b.toLowerCase();
+                var matchIndex = a.indexOf(b);
+                if (matchIndex == -1 || matchIndex > 0 && matchStart) {
+                    isMatch = false;
+                    break;
+                }
+            } else if (a !== b) {
+                isMatch = false;
+                break;
+            }
+
+        }
+        return isMatch;
+    }
+});
+wm.PageContainer.extend({
+       _onHideParent: function() {
+        if (this.page) {
+            wm.fire(this.page, "onHide");
+            this.page.root.callOnHideParent();
+        }
+    }
+});
 
 dojo.declare("Main", wm.Page, {
     
@@ -19,8 +97,10 @@ dojo.declare("Main", wm.Page, {
     start: function() {        
         dojo.attr(this.logo.img, "alt", "Bookshare Logo");        
         this.connect(app.appRoot, "resize", this, "updateImageSize");  
-        dojo.attr(this.mainMenuRoleLabel.domNode,"role", "alert");
-            dojo.attr(this.searchLabel.domNode,"role", "alert");  
+        dojo.attr(this.layoutBox1.domNode, "role", "application");
+        dojo.attr(this.mainMenuRoleLabel.domNode.firstChild,"role", "alert");
+        dojo.attr(this.searchLabel.domNode.firstChild,"role", "alert");  
+        
     },
     downloadTypeFilter: function(inValue) {
         var result = false; 
@@ -78,6 +158,10 @@ dojo.declare("Main", wm.Page, {
         }
         this.bookListPageContainer.setProp("bookListDataSet", inSender.getValue("bookshare.book.list.result.queriedItems"));        
     },
+    clearBookList: function() {
+        this.bookListPageContainer.setProp("bookListDataSet", null);          
+        
+    },
     searchOptionsListSelect1: function(inSender, inItem) {
         switch(inSender.selectedItem.getValue("dataValue")) {
             case "author":
@@ -105,17 +189,7 @@ dojo.declare("Main", wm.Page, {
         }
         this.updateImageSize();
         
-        /* Desperate hack to load the facebook widget without it affecting initial load time.
-         * Explanation: The facebook widget requires loading of the facebook, gadget and iframe classes.
-         * Waiting for these impacts load time for starting the app.  Loading these later, when nothing
-         * else is loading means less impact on the user.
-         */
-        if (inIndex == 1 && !this.facebookWidget) {
-            this.facebookWidget = this.panel1.createComponents({facebookWidget: ["wm.gadget.FacebookLikeButton", 
-            {"height":"21px","href":"http://www.bookshare.org","layout":"button_count","width":"95px"}, {}]})[0];
-            this.panel1.reflow();
-        }
-
+        
     },
     updateImageSize: function() {
         var maxImageWidth = 286;
@@ -127,16 +201,21 @@ dojo.declare("Main", wm.Page, {
 
     },
     homeLayerShow: function(inSender) {
-        this.mainMenuRoleLabel.setCaption("Showing Main Menu");
+        wm.job("setAriaAlert", 3000, this, function() {
+           this.mainMenuRoleLabel.setCaption("Main menu page is loaded");
+        });
     },
     homeLayerHide: function(inSender) {
         this.mainMenuRoleLabel.setCaption("");
     },
     searchLayerShow: function(inSender) {
-        this.searchLabel.setCaption("Enter a search and then select button below");
+        wm.job("setAriaAlert", 1000, this, function() {            
+            this.searchLabel.setCaption("Search page is loaded, Enter a search and then select button below");
+        });
     },
     searchLayerHide: function(inSender) {
         this.searchLabel.setCaption("");        
     },
-    _end: 0
-});
+  
+	_end: 0
+}); 

@@ -1,6 +1,8 @@
 dojo.declare("BookDetails", wm.Page, {
 "preferredDevice": "phone",
 start: function() {
+dojo.attr(this.ariaRoleLabel.domNode, "role", "alert");
+dojo.attr(this.downloadSuccessDialog.domNode, "role", "alert");
 },
 downloadSVarSuccess: function(inSender, inDeprecated) {
 var value = inSender.getValue("dataValue") || "";
@@ -49,6 +51,9 @@ this.disconnect(this._openQueueConnect);
 /* Dismiss this as button1 "View Queue" will never have its normal onclick event fire due to the window change blocking the full event */
 app.confirmDialog.hide();
 },
+downloadSuccessDialogShow: function(inSender) {
+inSender.focus();
+},
 _end: 0
 });
 
@@ -69,7 +74,7 @@ wire4: ["wm.Wire", {"expression":undefined,"source":"app.varAPIKey.dataValue","t
 }]
 }]
 }],
-downloadSVar: ["wm.ServiceVariable", {"operation":"DownloadAsync","service":"xhrService"}, {"onSuccess":"downloadSVarSuccess"}, {
+downloadSVar: ["wm.ServiceVariable", {"operation":"DownloadAsync","service":"xhrService"}, {"onSuccess":"downloadSuccessDialog.show"}, {
 binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"formPanel","targetProperty":"loadingDialog"}, {}]
 }],
@@ -86,12 +91,13 @@ wire4: ["wm.Wire", {"expression":undefined,"source":"app.varAPIKey.dataValue","t
 notifyDownloadSuccess: ["wm.NotificationCall", {"operation":"confirm"}, {"onClose":"notifyDownloadSuccessClose"}, {
 input: ["wm.ServiceInput", {"type":"confirmInputs"}, {}, {
 binding: ["wm.Binding", {}, {}, {
-wire: ["wm.Wire", {"expression":"\"Your book has been added to your queue\"","targetProperty":"text"}, {}],
 wire1: ["wm.Wire", {"expression":"\"View Queue\"","targetProperty":"OKButtonText"}, {}],
-wire2: ["wm.Wire", {"expression":"\"Continue Browsing\"","targetProperty":"CancelButtonText"}, {}]
+wire2: ["wm.Wire", {"expression":"\"Continue Browsing\"","targetProperty":"CancelButtonText"}, {}],
+wire: ["wm.Wire", {"expression":"\"<div role='alertdialog'>Your book has been added to your queue</div>\"","targetProperty":"text"}, {}]
 }]
 }]
 }],
+downloadSuccessDialog: ["wm.GenericDialog", {"button1Caption":"View Queue","button1Close":true,"button2Caption":"Continue Browsing","button2Close":true,"height":"101px","mobileHeight":"61px","title":"Download Successful","userPrompt":"Your book has been added to your queue"}, {"onShow":"downloadSuccessDialogShow"}],
 layoutBox1: ["wm.Layout", {"horizontalAlign":"left","verticalAlign":"top"}, {}, {
 panel3: ["wm.Panel", {"_classes":{"domNode":["BookHeaderPanel"]},"fitToContentHeight":true,"height":"60px","horizontalAlign":"left","layoutKind":"left-to-right","verticalAlign":"top","width":"100%"}, {}, {
 titleLabel: ["wm.Label", {"autoSizeHeight":true,"height":"20px","minDesktopHeight":20,"minHeight":20,"padding":"4","singleLine":false,"width":"100%"}, {}, {
@@ -141,6 +147,11 @@ binding: ["wm.Binding", {}, {}, {
 wire: ["wm.Wire", {"expression":undefined,"source":"bookDetailsSVar.bookshare.book.metadata.completeSynopsis","targetProperty":"dataValue"}, {}]
 }]
 }]
+}]
+}],
+ariaRoleLabel: ["wm.Label", {"_classes":{"domNode":["ARIARoleLabel"]},"height":"1px","padding":"0","width":"100%"}, {}, {
+binding: ["wm.Binding", {}, {}, {
+wire: ["wm.Wire", {"expression":"\"Book Details Page Loaded.  Showing book \" + ${bookDetailsSVar.bookshare.book.metadata.title} + \" by \" + ${bookDetailsSVar.bookshare.book.metadata.author.dataValue}","targetProperty":"caption"}, {}]
 }]
 }]
 }]

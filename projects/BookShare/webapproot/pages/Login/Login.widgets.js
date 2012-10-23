@@ -1,5 +1,5 @@
 Login.widgets = {
-	phonegapCredentialStorage: ["wm.Variable", {"saveInPhonegap":true,"type":"EntryData"}, {}],
+	phonegapCredentialStorage: ["wm.Variable", {"saveInPhonegap":true,"type":"user"}, {}],
 	svarUserInfo: ["wm.ServiceVariable", {"operation":"UserInfo","service":"xhrService"}, {"onError":"loginFailed","onResult":"loadingDialog.hide","onSuccess":"svarUserInfoSuccess"}, {
 		input: ["wm.ServiceInput", {"type":"UserInfoInputs"}, {}, {
 			binding: ["wm.Binding", {}, {}, {
