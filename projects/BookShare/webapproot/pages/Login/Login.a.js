@@ -24,6 +24,7 @@ this.usernameInput.setDataValue(dojo.cookie("user") || "");
 this.usernameInput.focus();
 }
 this.loadingDialog.setMargin(parseInt(this.loadingDialog.widgetToCover.margin) + parseInt(this.loadingDialog.widgetToCover.border));
+dojo.attr(this.loginErrorMsg.domNode, "role", "alert");
 },
 loginButtonClick: function(inSender) {
 this.loginErrorMsg.setCaption("");
@@ -37,6 +38,8 @@ svarUserInfoResult: function(inSender) {
 inSender.getData() === null ? this.loginFailed() : this.svarUserInfoSuccess(inSender);
 },
 svarUserInfoSuccess: function(inSender) {
+var data = inSender.getData();
+if (!data || !data.bookshare) return this.loginFailed();
 console.log("Welcome: " + inSender.getData().bookshare.user.displayName);
 if (window["PhoneGap"]) {
 this.phonegapCredentialStorage.setData({
