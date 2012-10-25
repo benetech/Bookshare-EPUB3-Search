@@ -66,3 +66,13 @@ html.WMApp body .FullSizeLabel .wmSizeNode {
     height: 100%;
     display: block;
 }
+
+
+
+
+html.WMApp body .ARIARoleLabel .wmSizeNode {
+    font-size: 1;
+    height:1px;
+    overflow:hidden;
+    color: white;
+}

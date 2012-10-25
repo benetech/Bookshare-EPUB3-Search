@@ -1,5 +1,6 @@
 {
 	"xhrpaths": [
+		"http://10.0.1.5:8080/BookShare", 
 		"http://10.0.1.5:8094/BookShare", 
 		undefined, 
 		"http://192.168.0.207:8080/BookShare", 

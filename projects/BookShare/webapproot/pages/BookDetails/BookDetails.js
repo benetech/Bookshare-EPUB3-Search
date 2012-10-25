@@ -62,5 +62,30 @@ dojo.declare("BookDetails", wm.Page, {
         /* Dismiss this as button1 "View Queue" will never have its normal onclick event fire due to the window change blocking the full event */
         app.confirmDialog.hide();
     },
+    downloadMenuListSelect: function(inSender, inItem) {
+        switch(inSender.selectedItem.getValue("dataValue")) {
+            case "home": 
+                main.layers1.setLayerIndex(1);
+                break;
+            case "book":
+                this.layers.setLayerIndex(0);
+                break;
+            case "downloads":
+                window.open("https://www.bookshare.org/bookHistory?j_userName=" + app.varUser.getValue("email") + "&j_password=" + app.varUser.getValue("pass"));
+                break;
+        }
+    },
+    successLabelShow: function(inSender) {
+        this.successLabel.setCaption("");
+        wm.job("showAriaLabel", 3000, this, function() {
+            this.successLabel.setCaption("Your book has been added to your queue");
+        });
+    },
+    ariaRoleLabelShow: function(inSender) {
+        this.ariaRoleLabel.setCaption("");
+        wm.job("showAriaLabel", 3000, this, function() {
+            this.ariaRoleLabel.$.binding.wires.caption.refreshValue();
+        });
+    },
     _end: 0
 });

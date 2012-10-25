@@ -203,11 +203,6 @@ wm.JsonRpcService.smdCache['wavemakerService.smd'] = {
 		}],
 		"returnType": "com.wavemaker.runtime.server.DownloadResponse"
 	}, {
-		"name": "getInternalRuntime",
-		"operationType": null,
-		"parameters": null,
-		"returnType": "com.wavemaker.runtime.server.InternalRuntime"
-	}, {
 		"name": "getLocalHostIP",
 		"operationType": null,
 		"parameters": null,
@@ -218,36 +213,10 @@ wm.JsonRpcService.smdCache['wavemakerService.smd'] = {
 		"parameters": null,
 		"returnType": "int"
 	}, {
-		"name": "getServiceEventNotifier",
-		"operationType": null,
-		"parameters": null,
-		"returnType": "com.wavemaker.runtime.service.events.ServiceEventNotifier"
-	}, {
-		"name": "getServiceManager",
-		"operationType": null,
-		"parameters": null,
-		"returnType": "com.wavemaker.runtime.service.ServiceManager"
-	}, {
-		"name": "getServiceWire",
-		"operationType": null,
-		"parameters": [{
-			"name": "serviceName",
-			"type": "java.lang.String"
-		}, {
-			"name": "typeName",
-			"type": "java.lang.String"
-		}],
-		"returnType": "com.wavemaker.runtime.service.ServiceWire"
-	}, {
 		"name": "getSessionId",
 		"operationType": null,
 		"parameters": null,
 		"returnType": "java.lang.String"
-	}, {
-		"name": "getTypeManager",
-		"operationType": null,
-		"parameters": null,
-		"returnType": "com.wavemaker.runtime.service.TypeManager"
 	}, {
 		"name": "hostToDomain",
 		"operationType": null,
@@ -278,38 +247,6 @@ wm.JsonRpcService.smdCache['wavemakerService.smd'] = {
 			"type": "java.lang.String"
 		}],
 		"returnType": "java.lang.String"
-	}, {
-		"name": "setInternalRuntime",
-		"operationType": null,
-		"parameters": [{
-			"name": "internalRuntime",
-			"type": "com.wavemaker.runtime.server.InternalRuntime"
-		}],
-		"returnType": null
-	}, {
-		"name": "setServiceEventNotifier",
-		"operationType": null,
-		"parameters": [{
-			"name": "serviceEventNotifier",
-			"type": "com.wavemaker.runtime.service.events.ServiceEventNotifier"
-		}],
-		"returnType": null
-	}, {
-		"name": "setServiceManager",
-		"operationType": null,
-		"parameters": [{
-			"name": "serviceManager",
-			"type": "com.wavemaker.runtime.service.ServiceManager"
-		}],
-		"returnType": null
-	}, {
-		"name": "setTypeManager",
-		"operationType": null,
-		"parameters": [{
-			"name": "typeManager",
-			"type": "com.wavemaker.runtime.service.TypeManager"
-		}],
-		"returnType": null
 	}],
 	"serviceType": "JSON-RPC",
 	"serviceURL": "waveMakerService.json"
@@ -430,7 +367,7 @@ dojo.declare("BookShare", wm.Application, {
 	"projectSubVersion": "Alpha0", 
 	"projectVersion": 1, 
 	"showIOSPhoneGapBackButton": false, 
-	"studioVersion": "6.5.0.RELEASE", 
+	"studioVersion": "6.5.1.M0-BUILD-SNAPSHOT", 
 	"tabletMain": "", 
 	"theme": "wm_default", 
 	"toastPosition": "br", 
@@ -579,6 +516,73 @@ dojo.declare("BookShare", wm.Application, {
 	_end: 0
 });
 
+wm.Application.extend({
+    doRun: function() {
+        if (wm.isPhonegap) {
+            if (!window["PhoneGap"]) {
+                wm.job("doRun", 100, this, "doRun");
+                return;
+            }
+            dojo["require"]("build.Gzipped.wm_phonegap_misc", true);
+            dojo.forEach(wm.componentFixList._phonegap, function(fix) {
+                try {
+                    fix();
+                } catch(e){}
+            });
+        }
+
+
+
+
+        this.createPageContainer();
+        this.domNode = this.appRoot.domNode;
+        this.reflow();
+
+        /* Load all app-level components from project.js */
+        this.loadComponents(this.constructor.widgets || this.widgets);
+
+
+        if (!this.debugDialog) {
+            if (this._overrideDebugDialog !== undefined) {
+                if (this._overrideDebugDialog) this.createDebugDialog();
+            } else if (djConfig.isDebug && (wm.device != "phone" || wm.isFakeMobile)) {
+                this.createDebugDialog();
+            }
+        }
+
+        if (!wm.isPhonegap) {
+            this.pageDialog = new wm.PageDialog({
+                name: "pageDialog",
+                owner: this
+            });
+        }
+
+
+        /* WM-2794: ENTER key in a text input causes focus to move to first button and fire it; make sure its a button that does nothing; only certain this is an issue in IE 8 */
+        if (dojo.isIE <= 8) {
+            var button = document.createElement("BUTTON");
+            button.style.width = "1px";
+            button.style.height = "1px";
+            this.domNode.appendChild(button);
+        }
+        var main;
+        if (wm.device == "tablet") {
+            main = this.tabletMain;
+        } else if (wm.device == "phone") {
+            main = this.phoneMain;
+        }
+        if (!main) {
+            main = this.main;
+        }
+        this.pageContainer._initialPageName = main;
+        if (window["PhoneGap"] && this.isSecurityEnabled && this.isLoginPageEnabled && this.phoneGapLoginPage) {
+            this.loadPage(this.phoneGapLoginPage);
+        } else {
+            this.loadPage(main);
+        }
+        this.hideLoadingIndicator();
+    }
+});
 BookShare.extend({
  postInit: function() {
      this.connect(this, "loadComponents", this, "setAPIKey");
@@ -603,7 +607,7 @@ font-weight: bold;\
 font-size: 1.2Em;\
 text-align: center;\
 }\
-html.WMApp body .MainContent {\
+html.WMApp body .wm_default .MainContent {\
 background-color: #ffffff;\
 -webkit-border-radius: 16px;\
 border-radius: 16px;\
@@ -652,5 +656,11 @@ html.WMApp body .FullSizeLabel .wmSizeNode {\
 width: 100%;\
 height: 100%;\
 display: block;\
+}\
+html.WMApp body .ARIARoleLabel .wmSizeNode {\
+font-size: 1;\
+height:1px;\
+overflow:hidden;\
+color: white;\
 }\
 ';

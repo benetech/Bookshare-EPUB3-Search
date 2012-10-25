@@ -13,7 +13,7 @@ dojo.declare("BookShare", wm.Application, {
 	"projectSubVersion": "Alpha0", 
 	"projectVersion": 1, 
 	"showIOSPhoneGapBackButton": false, 
-	"studioVersion": "6.5.0.RELEASE", 
+	"studioVersion": "6.5.1.M0-BUILD-SNAPSHOT", 
 	"tabletMain": "", 
 	"theme": "wm_default", 
 	"toastPosition": "br", 
