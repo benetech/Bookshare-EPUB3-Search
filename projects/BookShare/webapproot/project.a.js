@@ -516,73 +516,6 @@ dojo.declare("BookShare", wm.Application, {
 	_end: 0
 });
 
-wm.Application.extend({
-    doRun: function() {
-        if (wm.isPhonegap) {
-            if (!window["PhoneGap"]) {
-                wm.job("doRun", 100, this, "doRun");
-                return;
-            }
-            dojo["require"]("build.Gzipped.wm_phonegap_misc", true);
-            dojo.forEach(wm.componentFixList._phonegap, function(fix) {
-                try {
-                    fix();
-                } catch(e){}
-            });
-        }
-
-
-
-
-        this.createPageContainer();
-        this.domNode = this.appRoot.domNode;
-        this.reflow();
-
-        /* Load all app-level components from project.js */
-        this.loadComponents(this.constructor.widgets || this.widgets);
-
-
-        if (!this.debugDialog) {
-            if (this._overrideDebugDialog !== undefined) {
-                if (this._overrideDebugDialog) this.createDebugDialog();
-            } else if (djConfig.isDebug && (wm.device != "phone" || wm.isFakeMobile)) {
-                this.createDebugDialog();
-            }
-        }
-
-        if (!wm.isPhonegap) {
-            this.pageDialog = new wm.PageDialog({
-                name: "pageDialog",
-                owner: this
-            });
-        }
-
-
-        /* WM-2794: ENTER key in a text input causes focus to move to first button and fire it; make sure its a button that does nothing; only certain this is an issue in IE 8 */
-        if (dojo.isIE <= 8) {
-            var button = document.createElement("BUTTON");
-            button.style.width = "1px";
-            button.style.height = "1px";
-            this.domNode.appendChild(button);
-        }
-        var main;
-        if (wm.device == "tablet") {
-            main = this.tabletMain;
-        } else if (wm.device == "phone") {
-            main = this.phoneMain;
-        }
-        if (!main) {
-            main = this.main;
-        }
-        this.pageContainer._initialPageName = main;
-        if (window["PhoneGap"] && this.isSecurityEnabled && this.isLoginPageEnabled && this.phoneGapLoginPage) {
-            this.loadPage(this.phoneGapLoginPage);
-        } else {
-            this.loadPage(main);
-        }
-        this.hideLoadingIndicator();
-    }
-});
 BookShare.extend({
  postInit: function() {
      this.connect(this, "loadComponents", this, "setAPIKey");
@@ -656,11 +589,5 @@ html.WMApp body .FullSizeLabel .wmSizeNode {\
 width: 100%;\
 height: 100%;\
 display: block;\
-}\
-html.WMApp body .ARIARoleLabel .wmSizeNode {\
-font-size: 1;\
-height:1px;\
-overflow:hidden;\
-color: white;\
 }\
 ';

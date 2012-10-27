@@ -4,7 +4,20 @@ dojo.declare("BookList", wm.Page, {
     },
 
     onShow: function() {
-      this.bookList.deselectAll();  
+      this.bookList.deselectAll();
+      if (!this.bookList.dataSet) {
+          this.connectOnce(this.bookList, "setDataSet", this, "onShow");
+          return;
+      }
+      var count = this.bookList.dataSet.getCount();
+      var alertText = "Book List Page Loaded.  ";
+      if (count == 25) {
+          alertText += "Showing first page of results" ;
+      } else {
+          alertText += "Showing " + count + " results" ;
+      }
+      alertText += " for " + this.listLabel.caption;
+      main.ariaAlert(alertText);
     },
     bookListScrollToBottom: function(inSender) {
         if (this.bookList.dataSet) {
@@ -41,15 +54,6 @@ dojo.declare("BookList", wm.Page, {
 	scrollUpButtonClick: function(inSender) {
 		 this.bookList.setScrollTop(this.bookList.getScrollTop() - this.bookList.getListNodeHeight()/2);            
 	},
-	onHide: function(inSender) {
-		    this.ariaRoleLabel.setCaption("");
-	},
-    onShow: function(inSender) {
-        wm.job("setAriaAlert", 3000, this, function() {
-            if (!this.bookList.dataSet._requester && !this.ariaRoleLabel.caption) {
-                this.ariaRoleLabel.$.binding.wires.caption.refreshValue();
-            }
-        });
-    },
+	
 	_end: 0
 });

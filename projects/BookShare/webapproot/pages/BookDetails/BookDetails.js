@@ -3,7 +3,9 @@ dojo.declare("BookDetails", wm.Page, {
     start: function() {
 
     },
-
+    onHide: function() {
+        this.bookDetailsDataSet.clearData();
+    },
     downloadSVarSuccess: function(inSender, inDeprecated) {
         var value = inSender.getValue("dataValue") || "";
         var code = (value.match(/\<status\-code\>(\d+)/) || [])[1];
@@ -49,6 +51,7 @@ dojo.declare("BookDetails", wm.Page, {
             });            
         }
         this.bookDownloadButton.setDisabled(!found);
+        this.ariaAlertBook();
     },
     openQueue: function(inSender, inResult) {       
          var url = "https://www.bookshare.org/bookHistory?j_userName=" + app.varUser.getValue("email") + "&j_password=" + app.varUser.getValue("pass");         
@@ -76,15 +79,27 @@ dojo.declare("BookDetails", wm.Page, {
         }
     },
     successLabelShow: function(inSender) {
-        this.successLabel.setCaption("");
-        wm.job("showAriaLabel", 3000, this, function() {
-            this.successLabel.setCaption("Your book has been added to your queue");
-        });
+        main.ariaAlert("Your book has been added to your queue");        
     },
-    ariaRoleLabelShow: function(inSender) {
-        this.ariaRoleLabel.setCaption("");
-        wm.job("showAriaLabel", 3000, this, function() {
-            this.ariaRoleLabel.$.binding.wires.caption.refreshValue();
+    mainLayerShow: function(inSender) {
+        if (!this.bookDetailsDataSet.isEmpty() && !this.bookDetailsSVar.getValue("bookshare.book").isEmpty()) {
+            this.ariaAlertBook();
+        }
+    },
+    ariaAlertBook: function() {
+        var authorList = this.bookDetailsSVar.getValue("bookshare.book.metadata.author");
+        var authors = "";
+        authorList.forEach(function(item) {
+            if (authors) authors += ", ";
+            authors += item.getValue("dataValue");
+        });
+        main.ariaAlert("Book Details Page Loaded.  Showing book " + 
+        this.bookDetailsSVar.getValue("bookshare.book.metadata.title") + 
+        " by " + authors);        
+    },
+    bookDetailsDataSetSetData: function(inSender) {
+        wm.onidle(this, function() {
+            if (!inSender.isEmpty()) this.bookDetailsSVar.update();
         });
     },
     _end: 0

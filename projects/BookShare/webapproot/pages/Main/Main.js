@@ -198,21 +198,17 @@ dojo.declare("Main", wm.Page, {
 
     },
     homeLayerShow: function(inSender) {
-        wm.job("setAriaAlert", 3000, this, function() {
-           this.mainMenuRoleLabel.setCaption("Main menu page is loaded");
+        this.ariaAlert("Main menu page is loaded");
+    },
+
+    searchLayerShow: function(inSender) {        
+        this.ariaAlert("Search page is loaded, Enter a search and then select button below");        
+    },
+    
+    ariaAlert: function(inText) {        
+        wm.job("setAriaAlert", 2000, this, function() {
+            this.ariaRoleLabel.setCaption(inText);
         });
     },
-    homeLayerHide: function(inSender) {
-        this.mainMenuRoleLabel.setCaption("");
-    },
-    searchLayerShow: function(inSender) {
-        wm.job("setAriaAlert", 1000, this, function() {            
-            this.searchLabel.setCaption("Search page is loaded, Enter a search and then select button below");
-        });
-    },
-    searchLayerHide: function(inSender) {
-        this.searchLabel.setCaption("");        
-    },
-  
 	_end: 0
 }); 
